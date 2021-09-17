@@ -15,6 +15,7 @@ export default class VoucherHelper {
 
 class Voucher {
   constructor(data) {
+    console.log(data);
     this.currency_code = data.currency_code;
     this.image_url = data.images[0].image_url;
     this.name = data.name;
