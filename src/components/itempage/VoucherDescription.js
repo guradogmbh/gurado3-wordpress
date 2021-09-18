@@ -33,7 +33,13 @@ function VoucherDescription(props) {
       </Row>
       <Row className="mb-5">
         <Col sm={5} className="pb-3">
-          <img src={props.voucher.images[0].image_url} />
+          <img
+            src={
+              props.voucher.images.length > 0
+                ? props.voucher.images[0].image_url
+                : 'https://i.stack.imgur.com/y9DpT.jpg'
+            }
+          />
         </Col>
         <Col className="text-left">
           <div

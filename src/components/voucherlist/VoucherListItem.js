@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   width: 100%;
-  max-width: 300px;
+  width: 300px;
   height: 270px;
   background-color: #f6f7f8;
   margin: 10px;
@@ -57,19 +57,30 @@ const renderPriceConfiguration = (p, v) => {
   console.log(p);
   switch (p.type.toLowerCase()) {
     case 'configurable':
-      return 'ab ' + p.minimum + ' ' + v.getCurrencyCode();
+      return (
+        'ab ' +
+        parseFloat(p.minimum).toFixed(2).replace('.', ',') +
+        ' ' +
+        v.getCurrencyCode()
+      );
     case 'range':
       return p.from + ' - ' + p.to + ' ' + v.getCurrencyCode();
     case 'fixed':
       if (p.amount === '0') return 'konfigurierbar';
-      return p.amount + ' ' + v.getCurrencyCode();
+      return (
+        parseFloat(p.amount).toFixed(2).replace('.', ',') +
+        ' ' +
+        v.getCurrencyCode()
+      );
     case 'dropdown':
       return (
-        p.options[0] +
+        parseFloat(p.options[0]).toFixed(2).replace('.', ',') +
         ' ' +
         v.getCurrencyCode() +
         ' - ' +
-        p.options[p.options.length - 1] +
+        parseFloat(p.options[p.options.length - 1])
+          .toFixed(2)
+          .replace('.', ',') +
         ' ' +
         v.getCurrencyCode()
       );

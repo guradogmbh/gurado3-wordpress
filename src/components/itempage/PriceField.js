@@ -185,6 +185,7 @@ export const PriceField = (props, setAmount) => {
         </>
       );
     case 'dropdown':
+      console.log(props.shippingMethod);
       return (
         <Fragment>
           <label className="custominput-label">Betrag</label>

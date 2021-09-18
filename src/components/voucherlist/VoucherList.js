@@ -19,6 +19,12 @@ function VoucherList(props) {
   const [isLoading, setLoading] = useState(true);
   const [style, setStyle] = useState(null);
   useEffect(() => {
+    const category_to_show =
+      document.getElementById('gurado-category').innerHTML;
+
+      if(category_to_show === "*"){
+        
+      }
     props.API.getVoucherList().then((result) => {
       if (result.length === 0) {
         sessionStorage.setItem('voucher_count', '1');
