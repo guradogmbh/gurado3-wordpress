@@ -31,13 +31,13 @@ The plugin should now work with your changes.
 
 # Changelog
 
-## 0.1.2
+## 0.1.2 (staging)
 
 - fixed width issues with the voucher boxes in product listing
 - fixed an error which led to shipping costs being shown despite virtual shipment
 - fixed price formatting in product listing
 - **added support of showing only a specific voucher category**
 
-## 0.1.0
+## 0.1.0 (release)
 
 - Initial release version
