@@ -109,7 +109,10 @@ function VoucherDetails(props) {
       )}
       <VoucherDescription voucher={voucher} style={style} />
       <hr style={{ borderWidth: '0.5px' }} />
-      <Container fluid className="w-100 pt-5">
+      <Container
+        fluid
+        className="w-100 pt-5 gurado_vd_details_container"
+      >
         <Row>
           <Col className="px-3">
             <VoucherDetailSelection

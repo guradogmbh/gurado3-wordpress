@@ -16,10 +16,14 @@ const HeaderCol = styled(Col)`
 
 function VoucherDescription(props) {
   return (
-    <DescriptionContainer fluid>
+    <DescriptionContainer
+      fluid
+      className="gurado_vd_description_container"
+    >
       <Row>
         <HeaderCol className="mb-2">
           <h1
+            className="gurado_vd_header"
             style={{
               color:
                 props.style === null
@@ -34,6 +38,7 @@ function VoucherDescription(props) {
       <Row className="mb-5">
         <Col sm={5} className="pb-3">
           <img
+            className="gurado_vd_description_image"
             src={
               props.voucher.images.length > 0
                 ? props.voucher.images[0].image_url
@@ -43,6 +48,7 @@ function VoucherDescription(props) {
         </Col>
         <Col className="text-left">
           <div
+            className="gurado_vd_description_text"
             dangerouslySetInnerHTML={{
               __html: props.voucher.description,
             }}

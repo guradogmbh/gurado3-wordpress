@@ -31,13 +31,16 @@ The plugin should now work with your changes.
 
 # Changelog
 
-## 0.1.2 (staging)
+## 0.1.2 (release)
 
 - fixed width issues with the voucher boxes in product listing
+- added 10px height to voucher box in product listing to make two-liners fit
 - fixed an error which led to shipping costs being shown despite virtual shipment
 - fixed price formatting in product listing
-- **added support of showing only a specific voucher category**
+- fixed a loading bug for stores with more than 20 vouchers
+- added customizable css classes to wrapper objects
+- **added support of showing only a specific voucher category. To do this, add a category-ID to the shortcode, for example [gurado category="3"]**
 
-## 0.1.0 (release)
+## 0.1.0
 
 - Initial release version

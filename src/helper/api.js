@@ -352,25 +352,32 @@ export default class Api {
     TODO: Error handling    
     */
     return new Promise(async (resolve, reject) => {
+      let category =
+        document.getElementById('gurado-category').innerHTML;
       let first_page = await axios.get(
-        this.proxy_url + '?endpoint=/products&page=1&page_size=20',
+        this.proxy_url +
+          '?endpoint=/products&page=1&page_size=20&collection_id=' +
+          category,
       );
       let data = JSON.parse(first_page.data);
       let vouchers = data.data;
-      let current_page = data.pagination.current_page;
-      let last_page = data.pagination.last_page;
+      let current_page = parseInt(data.pagination.current_page);
+      let last_page = parseInt(data.pagination.last_page);
       if (current_page === last_page) resolve(vouchers);
       let promises = [];
       for (let cp = current_page + 1; cp <= last_page; cp++) {
+        console.log(cp);
         promises.push(
-          new Promise(async (resolve, reject) => {
+          new Promise(async (res, reject) => {
             let promise_result = await axios.get(
               this.proxy_url +
                 '?endpoint=/products&page_size=20&page=' +
-                cp,
+                cp +
+                '&collection_id=' +
+                category,
             );
             let promise_data = JSON.parse(promise_result.data);
-            resolve(promise_data.data);
+            res(promise_data.data);
           }),
         );
       }

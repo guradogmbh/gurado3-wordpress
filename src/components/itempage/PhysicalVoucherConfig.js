@@ -86,12 +86,15 @@ function PhysicalVoucherConfig(props) {
           setFromName={setFromName}
           setAmount={setAmount}
         />
-        <Row>
-          <Col>
-            <ButtonDiv dStyle={props.style}>
+        <Row className="gurado_pv_button_row">
+          <Col className="gurado_pv_button_col">
+            <ButtonDiv
+              dStyle={props.style}
+              className="gurado_pv_button_wrapper"
+            >
               <Button
                 variant="primary"
-                className="mt-3 w-100"
+                className="mt-3 w-100 gurado_pv_button"
                 style={{ maxWidth: '600px' }}
                 disabled={isAdding}
                 onClick={addToCart}
@@ -120,8 +123,11 @@ function PhysicalVoucherConfig(props) {
               </Button>
             </ButtonDiv>
             {hasAlert && (
-              <Row className="mt-3" style={{ maxWidth: '600px' }}>
-                <Col>
+              <Row
+                className="mt-3 gurado_pv_alert_row"
+                style={{ maxWidth: '600px' }}
+              >
+                <Col className="gurado_pv_alert_col">
                   <Alert variant={alertVariant}>{alertText}</Alert>
                 </Col>
               </Row>

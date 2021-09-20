@@ -56,9 +56,9 @@ export default function SuccessModal(props) {
   const { show, onHide, ...rest } = props;
   return (
     <SModal show={show} onHide={onHide} centered>
-      <Modal.Body className="p-0">
+      <Modal.Body className="p-0 gurado_modal_body">
         <div
-          className="w-100 p-0 m-0 mb-3 d-flex align-items-center justify-content-center"
+          className="w-100 p-0 m-0 mb-3 d-flex align-items-center justify-content-center gurado_modal_body_wrapper"
           style={{
             height: '30px',
             backgroundColor: 'green',
@@ -81,14 +81,14 @@ export default function SuccessModal(props) {
               style={{ height: '95px', marginLeft: '15px' }}
             />
           </Col>
-          <Col className="text-center pt-2 mb-2">
+          <Col className="text-center pt-2 mb-2 gurado_modal_title_col">
             <b>{props.voucher.name}</b>
             <br />
             {props.amount}€<br />
             <ButtonDiv dStyle={props.style}>
               <Button
                 variant="outline-primary"
-                className="mx-3 mt-4"
+                className="mx-3 mt-4 gurado_modal_button gurado_modal_button_close"
                 onClick={onHide}
               >
                 Weiter einkaufen
@@ -97,7 +97,10 @@ export default function SuccessModal(props) {
                 to={'/checkout'}
                 style={{ textDecoration: 'none' }}
               >
-                <Button variant="primary" className="mx-3 mt-4">
+                <Button
+                  variant="primary"
+                  className="mx-3 mt-4 gurado_modal_button gurado_modal_button_checkout"
+                >
                   Zur Kasse
                 </Button>
               </Link>

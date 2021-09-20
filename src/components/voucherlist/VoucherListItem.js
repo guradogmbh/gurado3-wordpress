@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   width: 100%;
-  width: 300px;
+  width: 310px;
   height: 270px;
   background-color: #f6f7f8;
   margin: 10px;
@@ -29,7 +29,7 @@ const ImgDiv = styled.div`
   :hover img {
     -webkit-transform: scale(1.2);
     transform: scale(1.2);
-    max-height: 168px !important;
+    max-height: 174.38px !important;
   }
   overflow: hidden;
   @media only screen and (max-width: 578px) {
@@ -40,6 +40,7 @@ const VoucherName = styled.p`
   font-size: 14pt;
   margin-top: 10px;
   margin-bottom: 5px !important;
+  min-height: 35px;
   @media only screen and (max-width: 578px) {
     margin-top: 0px;
     font-size: 12pt;
@@ -54,7 +55,6 @@ const PriceConfiguration = styled.span`
 `;
 
 const renderPriceConfiguration = (p, v) => {
-  console.log(p);
   switch (p.type.toLowerCase()) {
     case 'configurable':
       return (

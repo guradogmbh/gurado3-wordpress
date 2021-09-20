@@ -30,7 +30,6 @@ const ButtonDiv = styled.div`
 `;
 
 function MailVoucherConfig(props) {
-  console.log(props);
   const [amount, setAmount] = useState(10);
   const [recipient, setRecipient] = useState('self');
   const [recipientName, setRecipientName] = useState('');
@@ -79,18 +78,27 @@ function MailVoucherConfig(props) {
 
   return (
     <Fragment>
-      <Row className={props.onlyVirtual ? 'mb-3' : 'my-3'}>
-        <Col>{PriceField(props, setAmount)}</Col>
+      <Row
+        className={
+          props.onlyVirtual
+            ? 'mb-3 gurado_vd_pricefield_row'
+            : 'my-3 gurado_vd_pricefield_row'
+        }
+      >
+        <Col className="gurado_vd_pricefield_col">
+          {PriceField(props, setAmount)}
+        </Col>
       </Row>
-      <Row className="my-2 d-flex align-items-center">
-        <Col xs={4}>
+      <Row className="my-2 d-flex align-items-center gurado_vd_recipient_row">
+        <Col xs={4} className="gurado_vd_recipient_col_left">
           <label className="custominput-label">Empfänger</label>
         </Col>
-        <Col>
+        <Col className="gurado_vd_recipient_col_right">
           <Form.Check
             inline
             label="ich"
             name="recipient"
+            className="gurado_vd_checkbox"
             type="radio"
             value="self"
             onChange={(e) => setRecipient(e.target.value)}
@@ -102,6 +110,7 @@ function MailVoucherConfig(props) {
             label="der Beschenkte"
             name="recipient"
             value="someone_else"
+            className="gurado_vd_checkbox"
             type="radio"
             id="radio-2"
             onChange={(e) => setRecipient(e.target.value)}
@@ -111,30 +120,33 @@ function MailVoucherConfig(props) {
       </Row>
       {recipient === 'someone_else' && (
         <>
-          <Row className="my-3">
-            <Col>
-              <div className="Input my-2">
+          <Row className="my-3 gurado_vd_recipient_name_row">
+            <Col className="gurado_vd_recipient_name_col">
+              <div className="Input my-2 gurado_vd_recipient_name_wrapper">
                 <input
                   type="text"
                   id="recName"
-                  className="Input-text"
+                  className="Input-text gurado_vd_input_text"
                   placeholder="Name des Beschenkten"
                   onChange={(e) => setRecipientName(e.target.value)}
                 />
-                <label htmlFor="recName" className="Input-label">
+                <label
+                  htmlFor="recName"
+                  className="Input-label gurado_vd_input_label"
+                >
                   Name des Beschenkten
                 </label>
               </div>
             </Col>
           </Row>
 
-          <Row className="my-3">
-            <Col>
-              <div className="Input my-3">
+          <Row className="my-3 gurado_vd_recipient_mail_row">
+            <Col className="gurado_vd_recipient_mail_col">
+              <div className="Input my-3 gurado_vd_recipient_mail_wrapper">
                 <input
                   type="text"
                   id="recMail"
-                  className="Input-text"
+                  className="Input-text gurado_vd_input_text"
                   placeholder={`E-Mail ${
                     recipient === 'someone_else'
                       ? 'des Beschenkten'
@@ -142,7 +154,10 @@ function MailVoucherConfig(props) {
                   }`}
                   onChange={(e) => props.setEmail(e.target.value)}
                 />
-                <label htmlFor="recMail" className="Input-label">
+                <label
+                  htmlFor="recMail"
+                  className="Input-label gurado_vd_input_label"
+                >
                   E-Mail{' '}
                   {recipient === 'someone_else'
                     ? 'des Beschenkten'
@@ -154,17 +169,20 @@ function MailVoucherConfig(props) {
         </>
       )}
       {props.voucher.allow_personalized_message === 'YES' && (
-        <Row className="my-4">
-          <Col>
-            <div className="Input my-2">
+        <Row className="my-4 gurado_vd_message_row">
+          <Col className="gurado_vd_message_col">
+            <div className="Input my-2 gurado_vd_message_wrapper">
               <Form.Control
-                className="Input-text"
+                className="Input-text gurado_vd_input_text"
                 id="pmsg"
                 placeholder="Persönliche Nachricht an den Empfänger"
                 as="textarea"
                 onChange={(e) => props.setMessage(e.target.value)}
               />
-              <label htmlFor="pmsg" className="Input-label">
+              <label
+                htmlFor="pmsg"
+                className="Input-label gurado_vd_input_label"
+              >
                 Persönliche Nachricht
               </label>
             </div>
@@ -174,7 +192,7 @@ function MailVoucherConfig(props) {
       <ButtonDiv dStyle={props.style}>
         <Button
           variant="primary"
-          className="mt-3 w-100"
+          className="mt-3 w-100 gurado_vd_cart_button"
           disabled={isAdding}
           style={{ maxWidth: '600px' }}
           onClick={addToCart}
@@ -203,8 +221,11 @@ function MailVoucherConfig(props) {
         </Button>
       </ButtonDiv>
       {hasAlert && (
-        <Row className="mt-3" style={{ maxWidth: '600px' }}>
-          <Col>
+        <Row
+          className="mt-3 gurado_vd_alert_box_row"
+          style={{ maxWidth: '600px' }}
+        >
+          <Col className="gurado_vd_alert_box_col">
             <Alert variant={alertVariant}>{alertText}</Alert>
           </Col>
         </Row>

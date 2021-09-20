@@ -24,18 +24,6 @@ import styled from 'styled-components';
 import QuantityPicker from '../../helper/quantityPicker';
 import AgreementModal from './AgreementModal';
 
-const ButtonDiv = styled.div`
-  .btn-primary {
-    background-color: ${(props) =>
-      props.dStyle === null
-        ? '#007bff'
-        : props.dStyle.btn_primary_color};
-    border-color: ${(props) =>
-      props.dStyle === null
-        ? '#007bff'
-        : props.dStyle.btn_primary_border_color};
-  }
-`;
 const StyledForm = styled(Form)`
   .form-control,
   select {
@@ -169,6 +157,7 @@ function Payment(props) {
   const [clientId, setClientId] = useState(null);
   const [dStyle, setdStyle] = useState(null);
 
+  //reload the cart with all of its items
   const reloadCart = async () => {
     let cart = await props.API.getCart();
     if (cart.items === null || cart.items === undefined) {
@@ -194,6 +183,7 @@ function Payment(props) {
     setLoading(false);
   };
 
+  //initial load
   useEffect(async () => {
     reloadCart();
     loadAgreements();
@@ -201,19 +191,22 @@ function Payment(props) {
     loadClientId();
   }, [props.API]);
 
+  //client id is required for the payment wall iFrame
   const loadClientId = async () => {
     let cid = await props.API.getClientId();
-    console.log('clientid');
-    console.log(cid);
     setClientId(cid.data);
   };
+
+  //countries for the Dropdown field
   const loadCountries = async () => {
     let fetched_countries = await props.API.getCountries();
     setCountries(fetched_countries);
   };
 
+  //this function makes sure that the iframe is re-rendered properly, for example if the user decides to go back to change his address and wants to open the payment wall again
   useEffect(() => {
     if (showPaymentWall) {
+      //make sure that the external JS from gurado is only loaded once
       if (!scriptSet) {
         const script = document.createElement('script');
         script.setAttribute('id', 'gurado_listener');
@@ -241,6 +234,7 @@ function Payment(props) {
         document.body.appendChild(script);
         setScriptSet(true);
       } else {
+        //if already loaded, we just append the payment wall to the already existing div to reload it
         let script = document.getElementById('gurado_listener');
         window.gurado
           .Payments({
@@ -257,6 +251,7 @@ function Payment(props) {
     }
   }, [props.API, showPaymentWall]);
 
+  //load user agreements
   const loadAgreements = async () => {
     props.API.getAgreements().then((data) => {
       let pAgreements = data;
@@ -267,6 +262,7 @@ function Payment(props) {
     });
   };
 
+  //delete item from cart
   const deleteItem = async (itemId) => {
     setDeleteItemId(itemId);
     setDeleteLoading(true);
@@ -279,6 +275,7 @@ function Payment(props) {
       });
   };
 
+  //mark an agreement as checked in the state to enable the continue button
   const updateAgreement = (agreement_id, status) => {
     let pAgreements = agreements;
     pAgreements.map((a) => {
@@ -305,6 +302,7 @@ function Payment(props) {
     setUpdatingQtyItem(null);
   };
 
+  //show agreement modal yes/no
   const doShowAgreementModal = async (agreement_id) => {
     setAgreementId(agreement_id);
     setShowAgreementModal(true);
@@ -377,7 +375,7 @@ function Payment(props) {
       <Container fluid className="mt-4 mb-5 ">
         <div
           style={{ height: '200px' }}
-          className="d-flex justify-content-center align-items-center"
+          className="d-flex justify-content-center align-items-center gurado_empty_cart_div"
         >
           <p style={{ fontSize: '20px' }}>
             Der Warenkorb ist leer
@@ -394,8 +392,11 @@ function Payment(props) {
   }
 
   return (
-    <Container fluid className="mt-4 mb-5">
-      <div style={{ cursor: 'pointer ' }} className="mb-3">
+    <Container fluid className="mt-4 mb-5 gurado_ct_container">
+      <div
+        style={{ cursor: 'pointer ' }}
+        className="mb-3 gurado_ct_back_div"
+      >
         {!showPaymentWall ? (
           <Link to="/" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon
@@ -416,7 +417,7 @@ function Payment(props) {
           </>
         )}
       </div>
-      <div className="w-100 mb-3">
+      <div className="w-100 mb-3 gurado_ct_steps">
         <div
           style={{
             width: '200px',
@@ -500,26 +501,32 @@ function Payment(props) {
       </div>
       {!showPaymentWall ? (
         <>
-          <StyledForm>
-            <Row>
-              <Col>
-                <Accordion defaultActiveKey="0">
-                  <Card>
-                    <Card.Header>
+          <StyledForm className="gurado_ct_form">
+            <Row className="gurado_ct_wrapper_row">
+              <Col className="gurado_ct_wrapper_col">
+                <Accordion
+                  defaultActiveKey="0"
+                  className="gurado_ct_accordion"
+                >
+                  <Card className="gurado_ct_accordion_card">
+                    <Card.Header className="gurado_ct_accordion_card_header">
                       <Accordion.Toggle
                         as={Button}
                         variant="link"
-                        className="text-left"
+                        className="text-left gurado_ct_accordion card_toggle"
                         eventKey="0"
                       >
                         <FontAwesomeIcon icon={faCartArrowDown} />{' '}
                         Warenkorb anzeigen
                       </Accordion.Toggle>
                     </Card.Header>
-                    <Accordion.Collapse eventKey="0">
-                      <Card.Body>
+                    <Accordion.Collapse
+                      eventKey="0"
+                      className="gurado_ct_accordion_collapse"
+                    >
+                      <Card.Body className="gurado_ct_accordion_body">
                         <Row
-                          className="d-none d-md-flex"
+                          className="d-none d-md-flex gurado_ct_accordion_body_row"
                           style={{ fontSize: '18px' }}
                         >
                           <Col xs={12} md={4}>
@@ -543,12 +550,12 @@ function Payment(props) {
                                 <Row
                                   className="item_row"
                                   key={item.item_id}
-                                  className="d-flex align-items-center my-3"
+                                  className="d-flex align-items-center my-3 gurado_ct_item_row"
                                 >
                                   <Col
                                     xs={12}
                                     md={4}
-                                    className="text-left d-flex item_name_col"
+                                    className="text-left d-flex item_name_col gurado_ct_item_col"
                                     style={{ paddingLeft: '15px' }}
                                   >
                                     <span

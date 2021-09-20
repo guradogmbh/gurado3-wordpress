@@ -60,6 +60,7 @@ function VoucherDetailSelection(props) {
           marginBottom: '10px',
         }}
         hidden={props.voucher.can_deliver_voucher_physically === 'NO'}
+        className="gurado_vd_shipping_method_label"
       >
         Versandmethode wählen
       </div>
@@ -70,6 +71,7 @@ function VoucherDetailSelection(props) {
           }
           style={{ maxWidth: '600px', marginBottom: '40px' }}
           dStyle={props.style}
+          className="gurado_vd_button_wrapper"
         >
           <Button
             variant={`${
@@ -79,6 +81,7 @@ function VoucherDetailSelection(props) {
             }`}
             style={{ width: 'calc(50% - 5px)' }}
             onClick={() => props.setShippingMethod('virtual')}
+            className="gurado_vd_button gurado_vd_button_virtual"
           >
             E-Mail
           </Button>
@@ -93,20 +96,21 @@ function VoucherDetailSelection(props) {
             }
             style={{ width: 'calc(50% - 5px)', float: 'right' }}
             onClick={() => props.setShippingMethod('physical')}
+            className="gurado_vd_button gurado_vd_button_physical"
           >
             Post
           </Button>
           <br />
           <p
-            className="mt-2"
+            className="mt-2 gurado_vd_shipping_time_label"
             hidden={props.shippingMethod === 'virtual'}
           >
             Nach erfolgreichem Zahlungseingang werden die Gutscheine
             am nächsten Werktag versendet.
           </p>
         </ButtonDiv>
-        <Row>
-          <Col>
+        <Row className="gurado_vd_carousel_row">
+          <Col className="gurado_vd_carousel_col">
             <PreviewCarousel
               voucher={props.voucher}
               shippingMethod={props.shippingMethod}
@@ -124,6 +128,7 @@ function VoucherDetailSelection(props) {
             fontSize: '24px',
             marginBottom: '10px',
           }}
+          className="gurado_vd_personalization_label"
         >
           Personalisierung
         </div>
