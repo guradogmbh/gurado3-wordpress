@@ -7,7 +7,7 @@ To download and use the Plugin, download the latest zip from the **release** fol
 
 # Developers
 
-This Plugin was created with ReactJS@17 and the non-modified version of Bootstrap 3 (react-bootstrap). If you intend to change the source code simply clone this repository instead of downloading the compiled zip. Feedback and pull requests are greatly appreciated.
+This Plugin was created with ReactJS@17 and the non-modified version of Bootstrap 4 (react-bootstrap). If you intend to change the source code simply clone this repository instead of downloading the compiled zip. Feedback and pull requests are greatly appreciated.
 
 ## Live compiling / Production build
 
