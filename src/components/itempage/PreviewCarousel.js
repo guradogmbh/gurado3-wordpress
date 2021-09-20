@@ -20,9 +20,10 @@ export default function PreviewCarousel(props) {
             setActiveIndex(i);
             props.setImage(t.thumbnail_url, t.template_id);
           }}
+          className="gurado_vd_carousel_template"
         >
           <img
-            className="img-fluid"
+            className="img-fluid gurado_vd_carousel_img"
             src={t.thumbnail_url}
             style={{
               width: t.thumbnail_width,
@@ -38,10 +39,6 @@ export default function PreviewCarousel(props) {
   };
 
   useEffect(() => {
-    console.log(templates);
-  }, [templates]);
-  useEffect(() => {
-    console.log(props.shippingMethod);
     if (props.shippingMethod === 'virtual') {
       calcTemplates(props.voucher.virtual_voucher_design_templates);
     } else {
@@ -64,6 +61,7 @@ export default function PreviewCarousel(props) {
           fontSize: '24px',
           marginBottom: '10px',
         }}
+        className="gurado_vd_carousel_label"
       >
         {(props.shippingMethod === 'virtual' &&
           props.voucher.virtual_voucher_design_templates.length <

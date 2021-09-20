@@ -1,12 +1,15 @@
 <?php
 /**
- * Plugin Name: gurado-beta
- * Plugin URI: https://site.gurado.de/
+ * Plugin Name: gurado3
  * Description: Das Gutschein & Ticketingsystem
  * Version: 0.1.2
- * Author: Jan van der Horst
+ * Author: gurado GmbH
  * Author URI: https://site.gurado.de/
  */
+
+ /*
+
+*/
 
 function register_my_session(){
   if( ! session_id() ) {
@@ -232,15 +235,15 @@ function gurado_api_options_page(  ) {
 }
 
 add_action('wp_enqueue_scripts', function ($hook) {
-    $js_to_load = 'http://localhost:3000/static/js/bundle.js';
-    wp_enqueue_script('gurado_js', $js_to_load, '', mt_rand(10,1000), true);
+    //$js_to_load = 'http://localhost:3000/static/js/bundle.js';
+    //wp_enqueue_script('gurado_js', $js_to_load, '', mt_rand(10,1000), true);
     //PRODUCTION:
     $dir =plugin_dir_url( __FILE__ );
     wp_enqueue_script('gurado_cart_js', $dir.'/cart/js/main.ef411038.js', '', mt_rand(10,1000), true);
-    //wp_enqueue_style( 'bootstrap4','https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' );
-    //wp_enqueue_style( 'guradostyle',$dir.'/static/css/main.4be3e891.css' );
+    wp_enqueue_style( 'bootstrap4','https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' );
+    wp_enqueue_style( 'guradostyle',$dir.'/static/css/main.4be3e891.css' );
     wp_enqueue_style( 'guradostylecart',$dir.'/cart/css/main.58f5fe4e.css' );
-    //wp_enqueue_script('gurado_js', $dir.'/static/js/main.c39fc668.js', '', mt_rand(10,1000), true);
+    wp_enqueue_script('gurado_js', $dir.'/static/js/main.faf701a6.js', '', mt_rand(10,1000), true);
 
     wp_localize_script('gurado_js', 'gurado_js_ajax', array(
       'urls'    => array(
@@ -469,8 +472,13 @@ add_action('wp_enqueue_scripts', function ($hook) {
       if(startsWith($endpoint, "/products")){
         $page = $params['page'];
         $page_size = $params['page_size'];
+        $collection_id = $params["collection_id"];
+        $query_url = "https://storefront.gurado.de/api/v1/products?page_size=$page_size&page=$page";
+        if($collection_id !== "*"){
+          $query_url = $query_url."&collection_id=$collection_id";
+        }
         // build the URL using the endpoint and any params and make a remote GET request
-          $response = wp_remote_get( "https://storefront.gurado.de/api/v1/products?page_size=$page_size&page=$page" ,
+          $response = wp_remote_get( $query_url ,
           array( 'timeout' => 10,
          'headers' => array( 
             'Authorization' => $api_key,
