@@ -22,9 +22,8 @@ function VoucherList(props) {
     const category_to_show =
       document.getElementById('gurado-category').innerHTML;
 
-      if(category_to_show === "*"){
-        
-      }
+    if (category_to_show === '*') {
+    }
     props.API.getVoucherList().then((result) => {
       if (result.length === 0) {
         sessionStorage.setItem('voucher_count', '1');
@@ -42,10 +41,9 @@ function VoucherList(props) {
     .getVouchers()
     .filter((voucher) => voucher.options === undefined)
     .map((voucher) => {
-      console.log(voucher.options);
       return (
         <VoucherListItem
-          key={voucher.getSku()}
+          key={`vli${voucher.getSku()}`}
           voucher={voucher}
           style={style}
         />

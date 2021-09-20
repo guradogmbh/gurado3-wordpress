@@ -30,7 +30,6 @@ const ButtonDiv = styled.div`
 `;
 
 function MailVoucherConfig(props) {
-  console.log(props);
   const [amount, setAmount] = useState(10);
   const [recipient, setRecipient] = useState('self');
   const [recipientName, setRecipientName] = useState('');

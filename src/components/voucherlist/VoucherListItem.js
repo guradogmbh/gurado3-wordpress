@@ -54,7 +54,6 @@ const PriceConfiguration = styled.span`
 `;
 
 const renderPriceConfiguration = (p, v) => {
-  console.log(p);
   switch (p.type.toLowerCase()) {
     case 'configurable':
       return (
