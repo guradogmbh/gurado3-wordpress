@@ -365,7 +365,6 @@ export default class Api {
       let last_page = parseInt(data.pagination.last_page);
       if (current_page === last_page) resolve(vouchers);
       let promises = [];
-      console.log('for');
       for (let cp = current_page + 1; cp <= last_page; cp++) {
         console.log(cp);
         promises.push(
