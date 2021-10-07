@@ -311,7 +311,11 @@ function Payment(props) {
   const handlePayment = async () => {
     if (requiresAcceptance) {
       let agreements_accepted = true;
+      let pAgreements = [];
       agreements.map((agreement) => {
+        pAgreements.push({
+          agreement_id: agreement.agreement_id,
+        });
         if (agreement.checked === false) {
           agreements_accepted = false;
         }
@@ -320,6 +324,8 @@ function Payment(props) {
         setAlertText('Bitte Bedingungen lesen und bestätigen');
         return;
       }
+      setIsSending(true);
+      //await props.API.sendAgreements(pAgreements);
     }
 
     setIsSending(true);
