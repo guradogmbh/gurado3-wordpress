@@ -31,7 +31,12 @@ The plugin should now work with your changes.
 
 # Changelog
 
-## 0.1.2 (release)
+## 0.1.3 (release)
+
+- fixed a loading issue with the payment wall for shops with agreement acceptance requirement
+- removed font imports from css file (now using wordpress standard)
+
+## 0.1.2
 
 - fixed width issues with the voucher boxes in product listing
 - added 10px height to voucher box in product listing to make two-liners fit

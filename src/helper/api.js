@@ -132,6 +132,21 @@ export default class Api {
           path: '/billing-address',
           value: this.billing_address,
         },
+        {
+          op: 'add',
+          path: '/agreements',
+          value: [
+            {
+              agreement_id: '1',
+            },
+            {
+              agreement_id: '2',
+            },
+            {
+              agreement_id: '3',
+            },
+          ],
+        },
       ];
       if (this.billing_address.use_for_shipping === 0) {
         request_body.push({
@@ -189,6 +204,33 @@ export default class Api {
         })
         .then((result) => {
           resolve(JSON.parse(result.data));
+        });
+    });
+  };
+
+  sendAgreements = async (pAgreements) => {
+    let request_body = [
+      {
+        op: 'add',
+        path: '/agreements',
+        value: pAgreements,
+      },
+    ];
+    return new Promise(async (resolve, reject) => {
+      axios
+        .get(
+          this.proxy_url +
+            '?endpoint=/patchCart&cartId = ' +
+            this.cart_id +
+            '&item=' +
+            JSON.stringify(request_body),
+        )
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        })
+        .then((result) => {
+          resolve();
         });
     });
   };
