@@ -31,6 +31,18 @@ The plugin should now work with your changes.
 
 # Changelog
 
+## 0.1.5 (release)
+
+Please be careful with installing this version, it is not compatible with the last versions. If you did your own styling files, they will have to be rewritten completely.
+
+- completely removed bootstrap as a styling framework to improve compatibility
+
+## 0.1.4
+
+- fixed a bug with checkbox acceptance requirements
+- gradually increased loading speed by optimizing css
+- adapted style to standard wordpress theme
+
 ## 0.1.3 (release)
 
 - fixed a loading issue with the payment wall for shops with agreement acceptance requirement
