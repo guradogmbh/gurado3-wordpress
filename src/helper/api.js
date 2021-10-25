@@ -4,16 +4,23 @@ export default class Api {
     this.proxy_url = window.gurado_js_ajax.urls.proxy;
     this.cart_id = null;
     this.billing_address = null;
+    this.agreementsRequired = false;
     this.shipping_address = null;
     this.email = null;
 
     if (sessionStorage.getItem('cart_id')) {
       this.cart_id = sessionStorage.getItem('cart_id');
     }
-    console.log(this.cart_id);
   }
 
+  setAgreementsRequired = (p) => {
+    this.agreementsRequired = p;
+  };
+
   getCartId = () => {
+    if (this.cart_id === undefined || this.cart_id === null) {
+      this.cart_id = sessionStorage.getItem('cart_id');
+    }
     return this.cart_id;
   };
   getEmail = () => {
@@ -59,7 +66,7 @@ export default class Api {
             JSON.stringify(options),
         )
         .then((result) => {
-          resolve(result);
+          resolve(JSON.parse(result.data));
         });
     });
   };
@@ -76,6 +83,9 @@ export default class Api {
 
   updateQty = async (item_id, qty) => {
     return new Promise(async (resolve, reject) => {
+      if (this.cart_id === undefined || this.cart_id === null) {
+        this.cart_id = sessionStorage.getItem('cart_id');
+      }
       let request_body = [
         {
           op: 'replace',
@@ -132,7 +142,9 @@ export default class Api {
           path: '/billing-address',
           value: this.billing_address,
         },
-        {
+      ];
+      if (this.agreementsRequired) {
+        request_body.push({
           op: 'add',
           path: '/agreements',
           value: [
@@ -146,8 +158,8 @@ export default class Api {
               agreement_id: '3',
             },
           ],
-        },
-      ];
+        });
+      }
       if (this.billing_address.use_for_shipping === 0) {
         request_body.push({
           op: 'add',
@@ -237,6 +249,15 @@ export default class Api {
 
   getCart = async () => {
     return new Promise(async (resolve, reject) => {
+      if (
+        this.cart_id === undefined ||
+        this.cart_id === null ||
+        this.cart_id.length < 2
+      ) {
+        if (sessionStorage.getItem('cart_id')) {
+          this.cart_id = sessionStorage.getItem('cart_id');
+        }
+      }
       axios
         .get(
           this.proxy_url +
@@ -254,7 +275,7 @@ export default class Api {
     });
   };
 
-  getStyle = async () => {
+  getSettings = async () => {
     return new Promise(async (resolve, reject) => {
       axios
         .get(this.proxy_url + '?endpoint=/style')
@@ -270,7 +291,15 @@ export default class Api {
   addToCart = async (cart_item) => {
     return new Promise(async (resolve, reject) => {
       if (this.cart_id === null) {
-        await this.createCart();
+        if (
+          sessionStorage.getItem('cart_id') === undefined ||
+          sessionStorage.getItem('cart_id') === null ||
+          sessionStorage.getItem('cart_id').length < 1
+        ) {
+          await this.createCart();
+        } else {
+          this.cart_id = sessionStorage.getItem('cart_id');
+        }
       }
       console.log(JSON.stringify(cart_item));
       console.log('adding voucher to cart ' + this.cart_id);
@@ -312,7 +341,6 @@ export default class Api {
               parseFloat(sessionStorage.getItem('cart_qty')) + 1;
           }
           sessionStorage.setItem('cart_qty', cart_qty);
-          console.log('blabla');
           resolve(data);
         });
     });
@@ -320,7 +348,9 @@ export default class Api {
 
   deleteItem = async (item_id) => {
     return new Promise(async (resolve, reject) => {
-      if (this.cart_id === null) return;
+      if (this.cart_id === undefined || this.cart_id === null) {
+        this.cart_id = sessionStorage.getItem('cart_id');
+      }
       let req = await axios
         .get(
           this.proxy_url +

@@ -1,19 +1,4 @@
-export default class VoucherHelper {
-  constructor() {
-    this.vouchers = [];
-  }
-  extractVouchers = (data) => {
-    this.vouchers = [];
-    for (let i = 0; i < data.length; i++) {
-      this.vouchers.push(new Voucher(data[i]));
-    }
-  };
-  getVouchers() {
-    return this.vouchers;
-  }
-}
-
-class Voucher {
+export default class Voucher {
   constructor(data) {
     this.currency_code = data.currency_code;
     if (

@@ -235,15 +235,15 @@ function gurado_api_options_page(  ) {
 }
 
 add_action('wp_enqueue_scripts', function ($hook) {
-    //$js_to_load = 'http://localhost:3000/static/js/bundle.js';
-    //wp_enqueue_script('gurado_js', $js_to_load, '', mt_rand(10,1000), true);
+    $js_to_load = 'http://localhost:3000/static/js/bundle.js';
+    wp_enqueue_script('gurado_js', $js_to_load, '', mt_rand(10,1000), true);
     //PRODUCTION:
-    $dir =plugin_dir_url( __FILE__ );
-    wp_enqueue_script('gurado_cart_js', $dir.'/cart/js/main.ef411038.js', '', mt_rand(10,1000), true);
-    wp_enqueue_style( 'bootstrap4','https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' );
-    wp_enqueue_style( 'guradostyle',$dir.'/static/css/main.4be3e891.css' );
-    wp_enqueue_style( 'guradostylecart',$dir.'/cart/css/main.58f5fe4e.css' );
-    wp_enqueue_script('gurado_js', $dir.'/static/js/main.faf701a6.js', '', mt_rand(10,1000), true);
+    //$dir =plugin_dir_url( __FILE__ );
+    //wp_enqueue_script('gurado_cart_js', $dir.'/cart/js/main.ef411038.js', '', mt_rand(10,1000), true);
+    //wp_enqueue_style( 'bootstrap4','https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css' );
+    //wp_enqueue_style( 'guradostyle',$dir.'/static/css/main.f11880b2.css' );
+    //wp_enqueue_style( 'guradostylecart',$dir.'/cart/css/main.58f5fe4e.css' );
+    //wp_enqueue_script('gurado_js', $dir.'/static/js/main.46dad445.js', '', mt_rand(10,1000), true);
 
     wp_localize_script('gurado_js', 'gurado_js_ajax', array(
       'urls'    => array(
@@ -404,6 +404,21 @@ add_action('wp_enqueue_scripts', function ($hook) {
           ));
           $body = wp_remote_retrieve_body($response);
           return $body;
+      }
+      if(startsWith($endpoint, "/setAgreements")){
+        $item = $params['item'];
+        $cartId = $params['cartId'];
+        $response = wp_remote_request("https://storefront.gurado.de/api/v1/carts/$cartId", array(
+          'method' => 'PATCH',
+          'headers' => array(
+            'Authorization' => $api_key,
+            'accept' => 'application/json',
+            'content-type' => 'application/json'
+          ),
+          'body' => $item
+        ));
+        $body = wp_remote_retrieve_body($response);
+        return $body;
       }
       if(startsWith($endpoint, "/getAgreement")){
         $agreementId = $params['agreementId'];
