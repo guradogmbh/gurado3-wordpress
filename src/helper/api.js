@@ -332,6 +332,14 @@ export default class Api {
           }
           let cart_qty;
           if (
+            data.code !== undefined &&
+            data.code !== null &&
+            data.code.length > 1
+          ) {
+            resolve(data);
+            return;
+          }
+          if (
             sessionStorage.getItem('cart_qty') === null ||
             sessionStorage.getItem('cart_qty') === undefined
           ) {
@@ -414,6 +422,19 @@ export default class Api {
         });
 
       data = JSON.parse(result.data);
+      resolve(data);
+    });
+  };
+
+  getVoucherDetailsSku = async (sku) => {
+    return new Promise(async (resolve, reject) => {
+      let result = await axios
+        .get(this.proxy_url + '?endpoint=/product&sku=' + sku)
+        .catch((err) => {
+          reject(err);
+        });
+
+      let data = JSON.parse(result.data);
       resolve(data);
     });
   };

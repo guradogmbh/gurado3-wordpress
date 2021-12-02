@@ -26,6 +26,7 @@ export default class VoucherStore {
       ready: observable,
       voucher: observable,
       init: action,
+      initSku: action,
       shippingMethod: observable,
       setShippingMethod: action,
       templateId: observable,
@@ -120,6 +121,40 @@ export default class VoucherStore {
   setTemplateId = (id) => {
     runInAction(() => {
       this.templateId = id;
+    });
+  };
+
+  initSku = (sku) => {
+    runInAction(() => {
+      this.ready = false;
+    });
+    this.API.getVoucherDetailsSku(sku).then((data) => {
+      runInAction(() => {
+        this.voucher = data;
+        if (
+          data.price_configuration.type.toLowerCase() ===
+          'configurable'
+        ) {
+          this.isConfigurable = true;
+          this.options = data.options;
+          this.chosenOptions = { options: [] };
+          let pRequiredOptions = 0;
+          data.options.map((option) => {
+            if (option.is_required.toLowerCase() === 'yes') {
+              pRequiredOptions++;
+            }
+          });
+          this.requiredOptions = pRequiredOptions;
+        } else {
+          this.isConfigurable = false;
+          this.options = [];
+          this.chosenOptions = { options: [] };
+          this.requiredOptions = 0;
+        }
+        this.ready = true;
+        this.templateId =
+          data.virtual_voucher_design_templates[0].template_id;
+      });
     });
   };
 

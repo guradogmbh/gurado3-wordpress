@@ -1,5 +1,5 @@
 ![gurado](https://cdn-int.gurado.de/fileadmin/images/gurado-logo.svg)
-Welcome to the official [gurado 3](https://site.gurado.de/) WordPress-Plugin.
+Welcome to the official [gurado](https://site.gurado.de/) WordPress-Plugin.
 
 # Usage
 
@@ -31,7 +31,14 @@ The plugin should now work with your changes.
 
 # Changelog
 
-## 0.1.5 (release)
+## 0.1.7 (release)
+
+- added settings for checkout step colors
+- added a setting for automatic y-axis scrolling after refresh
+- fixed an issue which made it unable to order virtual vouchers for a third person
+- adapted mobile view of the voucher description
+
+## 0.1.5
 
 Please be careful with installing this version, it is not compatible with the last versions. If you did your own styling files, they will have to be rewritten completely.
 

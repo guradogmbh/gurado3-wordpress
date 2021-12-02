@@ -7,7 +7,7 @@ const MailConfiguration = observer(({ configStore }) => {
   return (
     <>
       <RecipientCol configStore={configStore} />
-      {configStore.recipient === 'other' && (
+      {configStore.recipient === 'someone_else' && (
         <>
           <RecipientName configStore={configStore} />
           <RecipientMail configStore={configStore} />
