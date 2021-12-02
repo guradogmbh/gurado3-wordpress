@@ -2,12 +2,39 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { useMediaQuery } from 'react-responsive';
 
 const MotiveSelection = observer(
   ({ voucherStore, settingsStore }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [templates, setTemplates] = useState([]);
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
+    const responsive = {
+      0: {
+        items: 1,
+      },
+      340: {
+        items: 2,
+      },
+      510: {
+        items: 3,
+      },
+      680: {
+        items: 4,
+      },
+      850: {
+        items: 5,
+      },
+    };
+
+    console.log(
+      Math.floor(
+        parseFloat(
+          document.getElementById('gurado-react').offsetWidth / 170,
+        ),
+      ),
+    );
     const calcTemplates = (pTemplates) => {
       let templates = [];
       pTemplates.map((t, i) => {
@@ -91,11 +118,11 @@ const MotiveSelection = observer(
           <p>Kein Motiv auswählbar</p>
         ) : (
           <AliceCarousel
-            autoWidth
-            mouseTracking
             activeIndex={activeIndex}
-            disableButtonsControls
-            disableDotsControls
+            controlsStrategy={'responsive'}
+            responsive={responsive}
+            disableButtonsControls={isMobile}
+            disableDotsControls={!isMobile}
           >
             {templates}
           </AliceCarousel>

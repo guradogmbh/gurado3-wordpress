@@ -31,18 +31,22 @@ const RecipientCol = observer(({ configStore }) => {
           value="self"
           onClick={(e) => configStore.setRecipient(e.target.value)}
         />
-        <label htmlFor="recipient1">ich</label>
+        <label style={{ marginLeft: '5px' }} htmlFor="recipient1">
+          ich
+        </label>
         <input
           style={{ marginLeft: '30px' }}
           type="radio"
           name="recipient"
           id="recipient2"
-          value="other"
+          value="someone_else"
           onClick={(e) => {
             configStore.setRecipient(e.target.value);
           }}
         />
-        <label htmlFor="recipient2">der Beschenkte</label>
+        <label style={{ marginLeft: '5px' }} htmlFor="recipient2">
+          der Beschenkte
+        </label>
       </div>
     </div>
   );

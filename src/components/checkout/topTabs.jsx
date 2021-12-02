@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-const TopTabs = observer(({ step }) => {
+const TopTabs = observer(({ step, settingsStore }) => {
   return (
     <div
       style={{
@@ -22,9 +22,18 @@ const TopTabs = observer(({ step }) => {
               height: '35px',
               backgroundColor:
                 step === '1'
-                  ? 'rgb(35, 186, 222)'
+                  ? settingsStore.settings.checkout_step_color_primary
+                    ? settingsStore.settings
+                        .checkout_step_color_primary
+                    : '#007bff'
+                  : settingsStore.settings
+                      .checkout_step_color_secondary
+                  ? settingsStore.settings
+                      .checkout_step_color_secondary
                   : 'rgb(87, 86, 86)',
-              color: 'white',
+              color: settingsStore.settings.checkout_step_color_text
+                ? settingsStore.settings.checkout_step_color_text
+                : 'white',
               borderRadius: '50%',
               display: 'flex',
               justifyContent: 'center',
@@ -52,9 +61,18 @@ const TopTabs = observer(({ step }) => {
               height: '35px',
               backgroundColor:
                 step === '2'
-                  ? 'rgb(35, 186, 222)'
-                  : 'rgb(87, 86, 86)',
-              color: 'white',
+                  ? settingsStore.settings.checkout_step_color_primary
+                    ? settingsStore.settings
+                        .checkout_step_color_primary
+                    : '#6c757d'
+                  : settingsStore.settings
+                      .checkout_step_color_secondary
+                  ? settingsStore.settings
+                      .checkout_step_color_secondary
+                  : 'rgb(87,86,86)',
+              color: settingsStore.settings.checkout_step_color_text
+                ? settingsStore.settings.checkout_step_color_text
+                : 'white',
               borderRadius: '50%',
               display: 'flex',
               justifyContent: 'center',

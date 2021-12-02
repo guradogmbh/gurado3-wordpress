@@ -17,8 +17,27 @@ const settingsStore = new SettingsStore();
 
 const Checkout = observer(({}) => {
   useEffect(() => {
+    if (settingsStore.ready) {
+      if (
+        settingsStore.settings.automatic_scrolling &&
+        settingsStore.settings.automatic_scrolling.toString() === 'on'
+      ) {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, [settingsStore.ready]);
+  useEffect(() => {
     cartStore.init();
   }, []);
+  useEffect(() => {
+    if (
+      cartStore.showPaymentWall &&
+      settingsStore.settings.automatic_scrolling &&
+      settingsStore.settings.automatic_scrolling.toString() === 'on'
+    ) {
+      window.scrollTo(0, 0);
+    }
+  }, [cartStore.showPaymentWall]);
   if (
     !cartStore.ready ||
     !cartStore.countriesReady ||
@@ -67,7 +86,10 @@ const Checkout = observer(({}) => {
           Zurück zur Addresseingabe
         </div>
       )}
-      <TopTabs step={cartStore.showPaymentWall ? '2' : '1'} />
+      <TopTabs
+        step={cartStore.showPaymentWall ? '2' : '1'}
+        settingsStore={settingsStore}
+      />
       {!cartStore.showPaymentWall ? (
         <CartAccordion
           cartStore={cartStore}
