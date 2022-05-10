@@ -60,10 +60,17 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/priceEstimate&sku=' +
-            sku +
-            '&options=' +
-            JSON.stringify(options),
+          '?endpoint=/priceEstimate&sku=' +
+          sku +
+          '&options=' +
+          JSON.stringify(options),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .then((result) => {
           resolve(JSON.parse(result.data));
@@ -74,7 +81,16 @@ export default class Api {
   getAgreements = async () => {
     return new Promise(async (resolve, reject) => {
       axios
-        .get(this.proxy_url + '?endpoint=/getAgreements')
+        .get(
+          this.proxy_url + '?endpoint=/getAgreements',
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .then((data) => {
           resolve(JSON.parse(data.data));
         });
@@ -96,12 +112,19 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/updateQty&cartId=' +
-            this.cart_id +
-            '&itemId=' +
-            item_id +
-            '&item=' +
-            JSON.stringify(request_body),
+          '?endpoint=/updateQty&cartId=' +
+          this.cart_id +
+          '&itemId=' +
+          item_id +
+          '&item=' +
+          JSON.stringify(request_body),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .then((data) => {
           if (data.data === '') {
@@ -118,8 +141,15 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/getAgreement&agreementId=' +
-            agreementId,
+          '?endpoint=/getAgreement&agreementId=' +
+          agreementId,
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .then((data) => {
           resolve(data);
@@ -170,10 +200,17 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/patchCart&cartId=' +
-            this.cart_id +
-            '&item=' +
-            JSON.stringify(request_body),
+          '?endpoint=/patchCart&cartId=' +
+          this.cart_id +
+          '&item=' +
+          JSON.stringify(request_body),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .then((data) => {
           if (data.data === '') {
@@ -195,8 +232,15 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/invoiceOrder&order=' +
-            JSON.stringify(pBillingAddress),
+          '?endpoint=/invoiceOrder&order=' +
+          JSON.stringify(pBillingAddress),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .catch((err) => {
           reject(err);
@@ -210,7 +254,16 @@ export default class Api {
   getCountries = async () => {
     return new Promise(async (resolve, reject) => {
       axios
-        .get(this.proxy_url + '?endpoint=/countries')
+        .get(
+          this.proxy_url + '?endpoint=/countries',
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .catch((err) => {
           reject(err);
         })
@@ -232,10 +285,17 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/patchCart&cartId = ' +
-            this.cart_id +
-            '&item=' +
-            JSON.stringify(request_body),
+          '?endpoint=/patchCart&cartId = ' +
+          this.cart_id +
+          '&item=' +
+          JSON.stringify(request_body),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .catch((err) => {
           console.log(err);
@@ -261,8 +321,15 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/getCart&cartId=' +
-            this.cart_id,
+          '?endpoint=/getCart&cartId=' +
+          this.cart_id,
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .catch((err) => {
           console.log(err);
@@ -278,7 +345,16 @@ export default class Api {
   getSettings = async () => {
     return new Promise(async (resolve, reject) => {
       axios
-        .get(this.proxy_url + '?endpoint=/style')
+        .get(
+          this.proxy_url + '?endpoint=/style',
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .catch((err) => {
           reject(err);
         })
@@ -310,10 +386,17 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-            '?endpoint=/addCartItem&cartId=' +
-            this.cart_id +
-            '&item=' +
-            JSON.stringify(cart_item),
+          '?endpoint=/addCartItem&cartId=' +
+          this.cart_id +
+          '&item=' +
+          JSON.stringify(cart_item),
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .catch((err) => {
           reject(err);
@@ -362,10 +445,17 @@ export default class Api {
       let req = await axios
         .get(
           this.proxy_url +
-            '?endpoint=/deleteItem&cartId=' +
-            this.cart_id +
-            '&item_id=' +
-            item_id,
+          '?endpoint=/deleteItem&cartId=' +
+          this.cart_id +
+          '&item_id=' +
+          item_id,
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
         )
         .catch((err) => {
           reject(err);
@@ -386,7 +476,16 @@ export default class Api {
   createCart = async () => {
     return new Promise(async (resolve, reject) => {
       let req = await axios
-        .get(this.proxy_url + '?endpoint=/createCart')
+        .get(
+          this.proxy_url + '?endpoint=/createCart',
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .catch((err) => {
           reject(err);
         });
@@ -416,7 +515,16 @@ export default class Api {
       let sku = data.data[0].sku;
 
       let result = await axios
-        .get(this.proxy_url + '?endpoint=/product&sku=' + sku)
+        .get(
+          this.proxy_url + '?endpoint=/product&sku=' + sku,
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .catch((err) => {
           reject(err);
         });
@@ -429,7 +537,16 @@ export default class Api {
   getVoucherDetailsSku = async (sku) => {
     return new Promise(async (resolve, reject) => {
       let result = await axios
-        .get(this.proxy_url + '?endpoint=/product&sku=' + sku)
+        .get(
+          this.proxy_url + '?endpoint=/product&sku=' + sku,
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
         .catch((err) => {
           reject(err);
         });
@@ -462,12 +579,20 @@ export default class Api {
         console.log(cp);
         promises.push(
           new Promise(async (res, reject) => {
-            let promise_result = await axios.get(
+            let promise_result = await axios
+            .get(
               this.proxy_url +
-                '?endpoint=/products&page_size=20&page=' +
-                cp +
-                '&collection_id=' +
-                category,
+              '?endpoint=/products&page_size=20&page=' +
+              cp +
+              '&collection_id=' +
+              category,
+              {
+                headers: {
+                  'Cache-Control': 'no-store',
+                  'Pragma': 'no-cache',
+                  'Expires': '0'
+                }
+              }
             );
             let promise_data = JSON.parse(promise_result.data);
             res(promise_data.data);
