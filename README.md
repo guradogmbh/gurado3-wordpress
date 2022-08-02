@@ -31,6 +31,10 @@ The plugin should now work with your changes.
 
 # Changelog
 
+## 0.1.9 (release)
+
+- apply coupon code during checkout
+
 ## 0.1.8 (release)
 
 - fixed gurado api cache issue using cache control headers

@@ -4,8 +4,14 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import Api from '../../../helper/api';
 import QuantityPicker from './quantityPicker';
+import SettingsStore from '../../../store/SettingsStore';
+import Loader from 'react-loader-spinner';
+
+
 
 const API = new Api();
+const settingsStore = new SettingsStore();
+
 const CartViewMobile = observer(({ cartStore }) => {
   return (
     <div style={{ width: '100%' }}>
@@ -90,11 +96,111 @@ const CartViewMobile = observer(({ cartStore }) => {
           </div>
         );
       })}
-      <div
+       {cartStore.cart && cartStore.cart.can_apply_redemption && cartStore.cart.can_apply_redemption == 'YES' ?
+      (<div
         style={{
           width: 'calc(100% + 40px)',
           backgroundColor: 'rgb(241, 241, 241)',
           marginTop: '3px',
+          marginLeft: '-20px',
+          paddingLeft: '30px',
+          paddingTop: '10px',
+          paddingBottom: '10px',
+          marginRight: '-20px',
+          paddingRight: '30px',
+        }}
+      >
+        <div style={{ width: '100%' }}>
+          <h4>Rabattcodes:</h4>
+          <h6>Wenn Du einen Rabattcode besitzt, trage diesen bitte hier ein.</h6>
+        </div>
+        <div style={{ width: '100%', display: 'flex' }}>
+        {cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code ? (
+                <div>
+                <input
+                type="text"
+                placeholder=""
+                name="gurado_coupon_code"
+                autoComplete=""
+                value={cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code?cartStore.cart.redemptions[0].code:''}
+                disabled={cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code?true:undefined}
+                onChange={(e) =>
+                  cartStore.setCouponCode(  
+                    'gurado_coupon_code',
+                    e.target.value,
+                  )
+                }
+                id="gurado_coupon_code"
+              />
+                <button
+                  style={
+                    settingsStore.settings.btn_primary_color === undefined
+                      ? { width: '100%', marginTop: '30px' }
+                      : {
+                        width: '100%',
+                        marginTop: '30px',
+                        backgroundColor:
+                          settingsStore.settings.btn_primary_color,
+                      }
+                  }
+                  onClick={cartStore.deleteCouponFromCart.bind(this,cartStore.cart.redemptions[0].redemption_id)}  
+
+                >
+                   {!cartStore.redeemLoading ? (
+                    <>Rabattcode stornieren</>
+                      ) : (
+                        <>
+                          <Loader width={30} height={30} color="white" type="ThreeDots" />  
+                        </> 
+                      )} </button> </div>): ( 
+                     <div>
+                     <input
+                     type="text"
+                     placeholder=""
+                     name="gurado_coupon_code"
+                     autoComplete=""
+                     onChange={(e) =>
+                       cartStore.setCouponCode(
+                         'gurado_coupon_code',
+                         e.target.value,
+                       )
+                     }
+                     id="gurado_coupon_code" 
+                   />
+                
+                
+                <button
+                  style={
+                    settingsStore.settings.btn_primary_color === undefined
+                      ? { width: '100%', marginTop: '30px' }
+                      : {
+                        width: '100%',
+                        marginTop: '30px',
+                        backgroundColor:
+                          settingsStore.settings.btn_primary_color,
+                      }
+                  }
+                  onClick={cartStore.cartRedemption} 
+                >
+                   {!cartStore.redeemLoading ? (
+                    <>Rabattcode einlösen</>
+                      ) : (
+                        <>
+                          <Loader width={30} height={30}
+                   color="white"
+                  type="ThreeDots" />
+                        </> 
+                      )}
+                </button></div>)}  
+        </div>
+      </div> ):''} 
+
+
+      <div
+        style={{
+          width: 'calc(100% + 40px)',
+          backgroundColor: 'rgb(241, 241, 241)',
+          marginTop: '20px',
           marginLeft: '-20px',
           paddingLeft: '30px',
           paddingTop: '10px',
@@ -134,6 +240,26 @@ const CartViewMobile = observer(({ cartStore }) => {
             </div>
           );
         })}
+         {cartStore.cart.redemptions.map((redemption, t) => {
+              return (
+                <div
+                style={{ width: '100%', display: 'flex' }}
+
+                  key={`gtax${t}`}
+                >
+                    <div>
+                      Rabatt  ({redemption.code}):
+                    </div>
+                    <div style={{
+                     marginLeft: 'auto'
+                    }}>
+                      {parseFloat(redemption.amount).toFixed(2).replace('.', ',')}{' '}
+                      {cartStore.cart.currency_code}
+                    </div>
+
+                </div>
+              );
+            })}
         <div style={{ width: '100%', display: 'flex' }}>
           <div>
             <b>Gesamtsumme:</b>
