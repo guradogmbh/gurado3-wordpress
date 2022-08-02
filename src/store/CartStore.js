@@ -15,12 +15,14 @@ export default class CartStore {
   API = new Api();
   countries = [];
   countriesReady = false;
+  couponCode = {};
   billingAddress = {};
   shippingAddress = {};
   requiresShipping = false;
   useForShipping = true;
   agreementsReady = false;
   paymentLoading = false;
+  redeemLoading = false;
   clientId = null;
   requiresAgreements = false;
   showPaymentWall = false;
@@ -52,11 +54,13 @@ export default class CartStore {
       agreementsChecked: observable,
       setAgreementsChecked: action,
       paymentLoading: observable,
+      redeemLoading: observable,
       handlePayment: action,
       showPaymentWall: observable,
       setShowPaymentWall: action,
       scriptSet: observable,
       setScriptSet: action,
+      
     });
   }
 
@@ -137,6 +141,13 @@ export default class CartStore {
     });
   };
 
+  setCouponCode = (key, value) => {
+    runInAction(() => {
+      this.couponCode[key] = value;
+    });
+  };
+
+
   reloadCart = () => {
     this.init();
   };
@@ -146,6 +157,51 @@ export default class CartStore {
       this.reloadCart();
     });
   };
+
+  cartRedemption = () => {
+    this.redeemLoading = true;
+    let result = '';
+    console.info("test12345",this.couponCode);
+    this.API.cartRedemption(this.couponCode.gurado_coupon_code).then((res) => {
+      console.info("test12345 cartRedemption",res); 
+      if(res && res.data && res.data != '')
+      {
+        result = JSON.parse(res.data);        
+        this.redeemLoading = false;
+
+
+      }
+      else {
+        this.reloadCart();  
+        document.getElementById('gurado_coupon_code').value = ''; 
+
+        this.redeemLoading = false;
+
+
+      }
+
+      if(result &&  result.code == 'INVALID_REDEMPTION_CODE') { 
+        alert("Ungültiger Gutscheincode"); 
+      }
+    });
+  }
+
+  
+  deleteCouponFromCart = (redemption_id) => {
+    this.redeemLoading = true;
+    console.info("test1235",redemption_id);
+
+    this.API.deleteCouponFromCart(redemption_id).then((res) => { 
+      this.setCouponCode('gurado_coupon_code','');
+      //document.getElementById('gurado_coupon_code').reset(); 
+
+
+      console.info ("the result is=>",res);
+      this.reloadCart();  
+      this.redeemLoading = false;
+      document.getElementById('gurado_coupon_code').value = '';
+    });
+  }
 
   updateQty = (item_id, qty) => {
     let index = this.cart.items.findIndex(
@@ -182,6 +238,7 @@ export default class CartStore {
           this.countriesReady = true;
           this.billingAddress['country_code'] = 'DE';
           this.shippingAddress['country_code'] = 'DE';
+          this.couponCode['gurado_coupon_code'] = ''; 
         });
       });
     }
@@ -218,6 +275,7 @@ export default class CartStore {
         }
         this.ready = true;
         this.reloading = false;
+        this.setCouponCode('gurado_coupon_code','');  
       });
     });
     this.API.getClientId().then((res) => {

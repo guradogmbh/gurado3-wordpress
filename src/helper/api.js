@@ -157,6 +157,72 @@ export default class Api {
     });
   };
 
+  cartRedemption = async (couponCode) => { 
+    console.info("in cart redemption12345",couponCode); 
+    if (this.cart_id === undefined || this.cart_id === null) { 
+      this.cart_id = sessionStorage.getItem('cart_id');
+    }
+    let request_body = 
+      {
+        code: couponCode,
+      };
+    return new Promise(async (resolve, reject) => {
+      axios
+        .get(
+          this.proxy_url +
+          '?endpoint=/cartRedemption&cartId=' + 
+          this.cart_id+
+          '&couponCode=' +
+          JSON.stringify(request_body), 
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
+        .then((data) => {
+          resolve(data);
+        });
+    });
+  };
+
+  
+  deleteCouponFromCart = async (redemptionId) => { 
+    console.info("in cart redemption12345",redemptionId); 
+    if (this.cart_id === undefined || this.cart_id === null) {
+      this.cart_id = sessionStorage.getItem('cart_id');
+    }
+    let request_body = 
+      {
+        redemption_id: redemptionId,
+      };
+    return new Promise(async (resolve, reject) => {
+      axios
+        .get(
+          this.proxy_url +
+          '?endpoint=/deleteCartRedemption&cartId=' + 
+          this.cart_id+
+          '&redemptionId=' +
+          redemptionId, 
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
+        .then((data) => {
+          resolve(data);
+        });
+    });
+  };
+
+
+  
+
   sendAddress = async () => {
     return new Promise(async (resolve, reject) => {
       let request_body = [
@@ -200,7 +266,7 @@ export default class Api {
       axios
         .get(
           this.proxy_url +
-          '?endpoint=/patchCart&cartId=' +
+          '?endpoint=/patchCart&cartId=' + 
           this.cart_id +
           '&item=' +
           JSON.stringify(request_body),
@@ -496,6 +562,8 @@ export default class Api {
       resolve(data);
     });
   };
+
+
 
   getVoucherDetails = async (urlKey) => {
     /* 

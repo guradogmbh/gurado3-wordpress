@@ -392,6 +392,41 @@ add_action('wp_enqueue_scripts', function ($hook) {
         $body = wp_remote_retrieve_body($response);
         return $body;
       }
+      // /cartRedemption
+
+      if(startsWith($endpoint, "/cartRedemption")){
+        $cartId = $params['cartId'];
+        $couponCode = $params['couponCode']; 
+        $response = wp_remote_request("https://storefront.gurado.de/api/v1/carts/$cartId/redemptions", array( 
+          'method' => 'POST',
+          'headers' => array(
+            'Authorization' => $api_key,
+            'accept' => 'application/json',
+            'content-type' => 'application/json'
+          ),
+          'body' => $couponCode  
+        ));
+        $body = wp_remote_retrieve_body($response); 
+        return $body;
+      }
+
+      if(startsWith($endpoint, "/deleteCartRedemption")){
+        $cartId = $params['cartId'];
+        $redemptionId = $params['redemptionId'];
+       
+        $response = wp_remote_request("https://storefront.gurado.de/api/v1/carts/$cartId/redemptions/$redemptionId", array( 
+          'method' => 'DELETE',
+          'headers' => array(
+            'Authorization' => $api_key,
+            'accept' => 'application/json',
+            'content-type' => 'application/json'
+          ),
+          'body' => ''  
+        ));
+        $body = wp_remote_retrieve_body($response); 
+        return $body;
+      }
+
       if(startsWith($endpoint, "/getCart")){
         $cartId = $params['cartId'];
         $response = wp_remote_get("https://storefront.gurado.de/api/v1/carts/$cartId", array(
