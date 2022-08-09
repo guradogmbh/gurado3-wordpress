@@ -21,8 +21,8 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
 
   return (
     <div style={{ marginTop: '30px' }}>
-      <Accordion allowZeroExpanded>
-        <AccordionItem>
+      <Accordion>
+        <AccordionItem dangerouslySetExpanded>
           <AccordionItemHeading>
             <AccordionItemButton>
               <FontAwesomeIcon icon={faCartArrowDown} /> Warenkorb
@@ -32,7 +32,7 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
           <AccordionItemPanel>
             {isMobile && <CartViewMobile cartStore={cartStore} />}
             {!isMobile && <CartViewDesktop cartStore={cartStore} />}
-          </AccordionItemPanel>
+          </AccordionItemPanel> 
         </AccordionItem>
       </Accordion>
       <div style={{ marginTop: '30px' }}></div>
