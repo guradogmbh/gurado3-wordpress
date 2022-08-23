@@ -87,7 +87,13 @@ const ConfigurationSelection = observer(
         ) : (
           <PostConfiguration configStore={configStore} />
         )}
+        
+        {voucherStore && voucherStore.voucher &&  voucherStore.voucher.allow_personalized_message == 'YES' ? ( 
         <CustomText configStore={configStore} />
+        ) : (
+            <></>   
+        )} 
+
         <div
           style={{
             width: '100%',
