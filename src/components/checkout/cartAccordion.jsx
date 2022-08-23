@@ -59,7 +59,7 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
                 style={{ width: '100%', display: 'flex' }}
                 key={`agrmnt${a}`}
               >
-                <input
+                <input style={{marginRight:'0.5rem'}} 
                   type="checkbox"
                   id={`agmt${a}`}
                   onClick={(e) =>
@@ -72,9 +72,10 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
                 <label
                   htmlFor={`agmt${a}`}
                   style={{
-                    display: 'inline-block',
+                    display: 'inline-block', 
                     position: 'relative',
-                    top: '-7px',
+                    top: '3px',
+                    marginBottom: '0.5rem' 
                   }}
                 >
                   {agreement.title}
