@@ -2,7 +2,7 @@
 /**
  * Plugin Name: gurado3
  * Description: Das Gutschein & Ticketingsystem
- * Version: 0.1.2
+ * Version: 0.1.9
  * Author: gurado GmbH
  * Author URI: https://site.gurado.de/
  */
