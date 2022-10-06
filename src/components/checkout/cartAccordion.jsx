@@ -15,13 +15,52 @@ import Loader from 'react-loader-spinner';
 import BillingAddressForm from './billingAddressForm';
 import ShippingAddressForm from './shippingAddressForm';
 import CartViewDesktop from './cartView/cartViewDesktop';
+import Modal from 'react-modal';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SuccessModal from './../voucherpage/successModal';
+import AgreementModal from './../voucherpage/agreementModal';
+
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+
+//let subtitle;
 
 const CartAccordion = observer(({ cartStore, settingsStore }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  //const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [model,setModel] = React.useState(false);
+  const [tempData,setTempData] = React.useState([]);
+
+  const getData = (title,content) => {
+    console.info("the title is",title);
+    console.info("the content is",content);
+
+    let tempData = [title,content];
+    setTempData(item=>[1,...tempData]);
+    return setModel(true);
+
+
+  }
+   // const [modalIsOpen, setIsOpen] = React.useState(false);
+
+
+
 
   return (
     <div style={{ marginTop: '30px' }}>
-      <Accordion>
+      <Accordion> 
+      <div>
         <AccordionItem dangerouslySetExpanded>
           <AccordionItemHeading>
             <AccordionItemButton>
@@ -31,9 +70,10 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
           </AccordionItemHeading>
           <AccordionItemPanel>
             {isMobile && <CartViewMobile cartStore={cartStore} />}
-            {!isMobile && <CartViewDesktop cartStore={cartStore} />}
-          </AccordionItemPanel> 
+            {!isMobile && <CartViewDesktop cartStore={cartStore} />}  
+          </AccordionItemPanel>
         </AccordionItem>
+        </div>
       </Accordion>
       <div style={{ marginTop: '30px' }}></div>
       <BillingAddressForm cartStore={cartStore} />
@@ -52,14 +92,20 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
         <ShippingAddressForm cartStore={cartStore} />
       )}
       {cartStore.requiresAgreements ? (
+      //  <div></div>
         <div style={{ width: '100%', marginTop: '15px' }}>
-          {cartStore.agreements.map((agreement, a) => {
+          {cartStore.agreementData.map((agreement,a) => { 
+            console.log("agreement is",agreement); 
+            console.log("agreement a is",a); 
+
             return (
               <div
                 style={{ width: '100%', display: 'flex' }}
                 key={`agrmnt${a}`}
               >
-                <input style={{marginRight:'0.5rem'}} 
+<input  style={{ 
+                    marginRight:'0.5rem'   
+                  }}
                   type="checkbox"
                   id={`agmt${a}`}
                   onClick={(e) =>
@@ -72,22 +118,32 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
                 <label
                   htmlFor={`agmt${a}`}
                   style={{
-                    display: 'inline-block', 
+                    display: 'inline-block',
                     position: 'relative',
-                    top: '3px',
-                    marginBottom: '0.5rem' 
+                    top: '3px',  
+                    marginBottom:'0.5rem',
+                    textDecoration:'underline' 
                   }}
                 >
-                  {agreement.title}
+                   <div>
+      <a onClick={()=>getData(agreement.title,agreement.content)}>{agreement.title}</a>  
+      
+      {model === true?<AgreementModal title={tempData[1]} content={tempData[2]} hide={()=>setModel(false)}/>:''}
+
+    </div>
                 </label>
               </div>
             );
           })}
+
+
         </div>
+        
       ) : (
         <div style={{ width: '100%', marginTop: '15px' }}>
           Mit dem Klick auf Prüfen und Bezahlen bestätigen Sie die
-          {cartStore.agreements.map((agreement, a) => {
+          {cartStore.agreementData.map((agreement, a) => {
+            console.info("the content is",agreement.content);
             return (
               <span key={`agrmnft${a}`}>
                 {' '}

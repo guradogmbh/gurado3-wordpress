@@ -1,6 +1,12 @@
 import { observer } from 'mobx-react-lite';
+import { useLocalStorage } from "./../../useLocalStorage";
+
 
 const BillingAddressForm = observer(({ cartStore }) => {
+ // const [gurado_firstname] = useLocalStorage("gurado_firstname");    
+ window.addEventListener("beforeunload", () => localStorage.removeItem('billing_address')); 
+ const storageData = JSON.parse(localStorage.getItem("billing_address"));
+ console.info("item data is localStorage",storageData); 
   return (
     <>
       <div
@@ -18,9 +24,11 @@ const BillingAddressForm = observer(({ cartStore }) => {
           name="gurado_email"
           id="gurado_email"
           onChange={(e) =>
-            cartStore.updateBillingAddress('email', e.target.value)
+            cartStore.updateBillingAddress('email', e.target.value) 
           }
-          autoComplete="email"
+          defaultValue={storageData && storageData.email?storageData.email:''} 
+
+          autoComplete="email" 
         />
       </div>
       <div
@@ -37,6 +45,8 @@ const BillingAddressForm = observer(({ cartStore }) => {
           type="text"
           placeholder="Vorname"
           name="gurado_firstname"
+          //value={gurado_firstname}
+          defaultValue={storageData && storageData.firstname?storageData.firstname:''}
           autoComplete="billing given-name"
           onChange={(e) =>
             cartStore.updateBillingAddress(
@@ -51,6 +61,7 @@ const BillingAddressForm = observer(({ cartStore }) => {
           style={{ marginTop: '15px' }}
           placeholder="Nachname"
           name="gurado_lastname"
+          defaultValue={storageData && storageData.lastname?storageData.lastname:''}
           autoComplete="billing family-name"
           onChange={(e) =>
             cartStore.updateBillingAddress('lastname', e.target.value)
@@ -71,6 +82,8 @@ const BillingAddressForm = observer(({ cartStore }) => {
             onChange={(e) =>
               cartStore.updateBillingAddress('street', e.target.value)
             }
+            defaultValue={storageData && storageData.street?storageData.street:''}
+
             autoComplete="billing street-address"
           />
           <input
@@ -82,6 +95,8 @@ const BillingAddressForm = observer(({ cartStore }) => {
                 e.target.value,
               )
             }
+            defaultValue={storageData && storageData.house_number?storageData.house_number:''}
+
             placeholder="Nr."
           />
         </div>
@@ -92,6 +107,8 @@ const BillingAddressForm = observer(({ cartStore }) => {
           onChange={(e) =>
             cartStore.updateBillingAddress('postcode', e.target.value)
           }
+          defaultValue={storageData && storageData.postcode?storageData.postcode:''}
+
           autoComplete="billing postal-code"
         />
         <input
@@ -101,17 +118,21 @@ const BillingAddressForm = observer(({ cartStore }) => {
           onChange={(e) =>
             cartStore.updateBillingAddress('city', e.target.value)
           }
+          defaultValue={storageData && storageData.city?storageData.city:''} 
+
           placeholder="Ort"
         />
         <select
           style={{ marginTop: '15px' }}
-          defaultValue="DE"
+         // defaultValue="DE"
           onChange={(e) =>
             cartStore.updateBillingAddress(
               'country_code',
               e.target.value,
             )
           }
+          defaultValue={storageData && storageData.country_code?storageData.country_code:'DE'}
+
           autoComplete="billing country"
         >
           {cartStore.countries.map((country, c) => {
@@ -126,4 +147,4 @@ const BillingAddressForm = observer(({ cartStore }) => {
     </>
   );
 });
-export default BillingAddressForm;
+export default BillingAddressForm; 
