@@ -155,7 +155,7 @@ export default class Api {
           resolve(data);
         });
     });
-  };
+  }; 
 
   cartRedemption = async (couponCode) => { 
     console.info("in cart redemption12345",couponCode); 
@@ -220,6 +220,35 @@ export default class Api {
     });
   };
 
+  getAgreementData = async (agreementId) => { 
+    console.info("in cart agreementId",agreementId); 
+    if (this.cart_id === undefined || this.cart_id === null) {
+      this.cart_id = sessionStorage.getItem('cart_id');
+    }
+    let request_body = 
+      {
+        agreementId: agreementId,
+      };
+    return new Promise(async (resolve, reject) => {
+      axios
+        .get(
+          this.proxy_url +
+          '?endpoint=/getAgreement&agreementId=' +
+          agreementId,  
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
+        .then((data) => {
+          resolve(data);
+        });
+    });
+  };
+
 
   
 
@@ -239,7 +268,9 @@ export default class Api {
           value: this.billing_address,
         },
       ];
-      if (this.agreementsRequired) {
+     // localStorage.setItem('billing_address',this.billing_address);
+     localStorage.setItem('billing_address', JSON.stringify(this.billing_address));
+      if (this.agreementsRequired) { 
         request_body.push({
           op: 'add',
           path: '/agreements',
@@ -289,12 +320,13 @@ export default class Api {
   };
 
   sendInvoiceOrder = async () => {
+    console.info("send invoice order");
     return new Promise(async (resolve, reject) => {
       if (!this.billing_address) reject('No billing address');
       let pBillingAddress = this.billing_address;
       pBillingAddress.billing_salutation = 'mr';
       pBillingAddress.cart_id = this.cart_id;
-      pBillingAddress.payment_method = 'invoice';
+      pBillingAddress.payment_method = 'invoice'; 
       axios
         .get(
           this.proxy_url +
@@ -495,7 +527,7 @@ export default class Api {
             cart_qty = 1;
           } else {
             cart_qty =
-              parseFloat(sessionStorage.getItem('cart_qty')) + 1;
+              parseFloat(sessionStorage.getItem('cart_qty')) + 1; 
           }
           sessionStorage.setItem('cart_qty', cart_qty);
           resolve(data);
@@ -676,3 +708,8 @@ export default class Api {
     });
   };
 }
+
+
+
+
+

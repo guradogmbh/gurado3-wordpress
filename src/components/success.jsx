@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
 export default function SuccessPage() {
+  localStorage.setItem('billing_address',{});
+  localStorage.clear();
+  sessionStorage.setItem('cart_qty', 0);  
+ 
   return (
     <div
       style={{
