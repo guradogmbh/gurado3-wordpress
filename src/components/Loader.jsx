@@ -2,6 +2,7 @@ import React from 'react';
 import Loader from 'react-loader-spinner';
 
 export default function GuradoLoader() {
+  console.info("dfdfdf");
   return (
     <div
       style={{
@@ -12,7 +13,8 @@ export default function GuradoLoader() {
         alignItems: 'center',
       }}
     >
-      <Loader type="Oval" color="blue" />
+
+      <Loader type="Oval" />
     </div>
   );
 }

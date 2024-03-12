@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 
 const FixedPricetag = observer(({ configStore, voucherStore }) => {
+  console.info("fixed price tag=>",configStore); 
   return (
     <div style={{ maxWidth: '400px' }}>
-      {parseFloat(configStore.price).toFixed(2).replace('.', ',')}{' '}
+      {parseFloat(configStore).toFixed(2).replace('.', ',')}{' '}
       {voucherStore.voucher.currency_code}{' '}
       {voucherStore.shippingMethod === 'physical' && (
         <>

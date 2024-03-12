@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 const ConfigOptions = observer(({ configStore, voucherStore }) => {
-  console.log(voucherStore.isConfigurable);
+  console.log("COnfigOptions is as follow=>",voucherStore.isConfigurable);
   console.log(voucherStore.options[0].type);
   return (
     <div

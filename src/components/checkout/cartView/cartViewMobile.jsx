@@ -6,13 +6,14 @@ import Api from '../../../helper/api';
 import QuantityPicker from './quantityPicker';
 import SettingsStore from '../../../store/SettingsStore';
 import Loader from 'react-loader-spinner';
-
-
+import { useTranslation } from 'react-i18next';
 
 const API = new Api();
-const settingsStore = new SettingsStore();
+const settingsStore = JSON.parse(localStorage.getItem('settings')); 
 
 const CartViewMobile = observer(({ cartStore }) => {
+  var { t } = useTranslation();
+
   return (
     <div style={{ width: '100%' }}>
       {cartStore.cart.items.map((item, i) => {
@@ -48,7 +49,7 @@ const CartViewMobile = observer(({ cartStore }) => {
             <div
               style={{
                 width: 'calc(100% + 40px)',
-                backgroundColor: 'rgb(241, 241, 241)',
+                //backgroundColor: 'rgb(241, 241, 241)', 
                 height: '60px',
                 marginTop: '3px',
                 marginLeft: '-20px',
@@ -100,7 +101,7 @@ const CartViewMobile = observer(({ cartStore }) => {
       (<div
         style={{
           width: 'calc(100% + 40px)',
-          backgroundColor: 'rgb(241, 241, 241)',
+          //backgroundColor: 'rgb(241, 241, 241)',
           marginTop: '3px',
           marginLeft: '-20px',
           paddingLeft: '30px',
@@ -111,8 +112,8 @@ const CartViewMobile = observer(({ cartStore }) => {
         }}
       >
         <div style={{ width: '100%' }}>
-          <h4>Rabattcodes:</h4>
-          <h6>Wenn Du einen Rabattcode besitzt, trage diesen bitte hier ein.</h6>
+          <h4>{t('DISCOUNT_CODES')}</h4>
+          <h6>{t('IF_YOU_HAVE_A_DISCOUNT_CODE_PLEASE_ENTER_IT_HERE')}</h6> 
         </div>
         <div style={{ width: '100%', display: 'flex' }}>
         {cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code ? (
@@ -121,6 +122,8 @@ const CartViewMobile = observer(({ cartStore }) => {
                 type="text"
                 placeholder=""
                 name="gurado_coupon_code"
+                className='gurado-storefront-form-control'
+                style={{height:'50px'}} 
                 autoComplete=""
                 value={cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code?cartStore.cart.redemptions[0].code:''}
                 disabled={cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code?true:undefined}
@@ -138,16 +141,16 @@ const CartViewMobile = observer(({ cartStore }) => {
                       ? { width: '100%', marginTop: '30px' }
                       : {
                         width: '100%',
-                        marginTop: '30px',
-                        backgroundColor:
-                          settingsStore.settings.btn_primary_color,
+                        marginTop: '30px'
+                        // backgroundColor:
+                        //   settingsStore.settings.btn_primary_color,
                       }
                   }
                   onClick={cartStore.deleteCouponFromCart.bind(this,cartStore.cart.redemptions[0].redemption_id)}  
 
                 >
                    {!cartStore.redeemLoading ? (
-                    <>Rabattcode stornieren</>
+                    <>{t('CANCEL_DISCOUNT_CODE')}</>
                       ) : (
                         <>
                           <Loader width={30} height={30} color="white" type="ThreeDots" />  
@@ -158,6 +161,8 @@ const CartViewMobile = observer(({ cartStore }) => {
                      type="text"
                      placeholder=""
                      name="gurado_coupon_code"
+                     className='gurado-storefront-form-control'
+                     style={{height:'50px'}} 
                      autoComplete=""
                      onChange={(e) =>
                        cartStore.setCouponCode(
@@ -165,25 +170,25 @@ const CartViewMobile = observer(({ cartStore }) => {
                          e.target.value,
                        )
                      }
-                     id="gurado_coupon_code" 
+                     id="gurado_coupon_code"  
                    />
                 
                 
                 <button
                   style={
-                    settingsStore.settings.btn_primary_color === undefined
+                    settingsStore.btn_primary_color === undefined
                       ? { width: '100%', marginTop: '30px' }
                       : {
                         width: '100%',
                         marginTop: '30px',
-                        backgroundColor:
-                          settingsStore.settings.btn_primary_color,
+                        // backgroundColor:
+                        //   settingsStore.btn_primary_color, 
                       }
                   }
                   onClick={cartStore.cartRedemption} 
                 >
                    {!cartStore.redeemLoading ? (
-                    <>Rabattcode einlösen</>
+                    <>{t('REDEEM_DISCOUNT_CODE')}</> 
                       ) : (
                         <>
                           <Loader width={30} height={30}
@@ -199,7 +204,7 @@ const CartViewMobile = observer(({ cartStore }) => {
       <div
         style={{
           width: 'calc(100% + 40px)',
-          backgroundColor: 'rgb(241, 241, 241)',
+          //backgroundColor: 'rgb(241, 241, 241)',
           marginTop: '20px',
           marginLeft: '-20px',
           paddingLeft: '30px',
@@ -210,12 +215,12 @@ const CartViewMobile = observer(({ cartStore }) => {
         }}
       >
         <div style={{ width: '100%' }}>
-          <h4>Bestellübersicht</h4>
+          <h4>{t('ORDER_OVERVIEW')}</h4>
         </div>
         <div style={{ width: '100%', display: 'flex' }}>
-          <div>Zwischensumme:</div>
+          <div>{t('SUBTOTAL')}:</div>
           <div style={{ marginLeft: 'auto' }}>
-            {parseFloat(cartStore.cart.subtotal)
+            {parseFloat(cartStore.cart.subtotal) 
               .toFixed(2)
               .replace('.', ',')}{' '}
             {cartStore.cart.currency_code}
@@ -248,7 +253,7 @@ const CartViewMobile = observer(({ cartStore }) => {
                   key={`gtax${t}`}
                 >
                     <div>
-                      Rabatt  ({redemption.code}):
+                    {t('DISCOUNT')}  ({redemption.code}):
                     </div>
                     <div style={{
                      marginLeft: 'auto'
@@ -262,7 +267,7 @@ const CartViewMobile = observer(({ cartStore }) => {
             })}
         <div style={{ width: '100%', display: 'flex' }}>
           <div>
-            <b>Gesamtsumme:</b>
+            <b>{t('TOTAL')} :</b>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <b>

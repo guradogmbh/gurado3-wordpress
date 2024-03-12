@@ -1,6 +1,20 @@
+import React, { useState, useEffect } from 'react';
+
 export default function ErrorMessage({ message }) {
+  const [showMessage, setShowMessage] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowMessage(false);
+    }, 10000);
+
+    return () => clearTimeout(timer); 
+  }, []);
+
   return (
-    <div
+    <>
+     {showMessage && (
+     <div
       style={{
         width: '100%',
         backgroundColor: '#f8d7da',
@@ -9,9 +23,14 @@ export default function ErrorMessage({ message }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        padding:'20px'
       }}
     >
-      {message}
+      {message} 
     </div>
+     )}
+    
+    </>
+   
   );
 }

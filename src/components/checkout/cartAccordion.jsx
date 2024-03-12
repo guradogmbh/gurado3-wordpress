@@ -20,6 +20,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SuccessModal from './../voucherpage/successModal';
 import AgreementModal from './../voucherpage/agreementModal';
+import { useTranslation } from 'react-i18next';
+
 
 
 const customStyles = {
@@ -56,6 +58,7 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
 
 
 
+   var { t } = useTranslation();
 
   return (
     <div style={{ marginTop: '30px' }}>
@@ -64,8 +67,7 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
         <AccordionItem dangerouslySetExpanded>
           <AccordionItemHeading>
             <AccordionItemButton>
-              <FontAwesomeIcon icon={faCartArrowDown} /> Warenkorb
-              anzeigen
+              <FontAwesomeIcon icon={faCartArrowDown} /> {t("VIEW_SHOPPING_CART")} 
             </AccordionItemButton>
           </AccordionItemHeading>
           <AccordionItemPanel>
@@ -75,112 +77,28 @@ const CartAccordion = observer(({ cartStore, settingsStore }) => {
         </AccordionItem>
         </div>
       </Accordion>
-      <div style={{ marginTop: '30px' }}></div>
-      <BillingAddressForm cartStore={cartStore} />
-      {cartStore.requiresShipping && (
-        <div style={{ width: '100%', marginTop: '10px' }}>
-          <input
-            type="checkbox"
-            name="reqshp"
-            id="reqshp"
-            onClick={() => cartStore.updateUseForShipping()}
-          />
-          <label htmlFor="reqshp">abweichende Lieferadresse</label>
-        </div>
-      )}
-      {!cartStore.useForShipping && (
-        <ShippingAddressForm cartStore={cartStore} />
-      )}
-      {cartStore.requiresAgreements ? (
-      //  <div></div>
-        <div style={{ width: '100%', marginTop: '15px' }}>
-          {cartStore.agreementData.map((agreement,a) => { 
-            console.log("agreement is",agreement); 
-            console.log("agreement a is",a); 
-
-            return (
-              <div
-                style={{ width: '100%', display: 'flex' }}
-                key={`agrmnt${a}`}
-              >
-<input  style={{ 
-                    marginRight:'0.5rem'   
-                  }}
-                  type="checkbox"
-                  id={`agmt${a}`}
-                  onClick={(e) =>
-                    cartStore.setAgreementsChecked(
-                      a,
-                      e.target.checked,
-                    )
-                  }
-                />
-                <label
-                  htmlFor={`agmt${a}`}
-                  style={{
-                    display: 'inline-block',
-                    position: 'relative',
-                    top: '3px',  
-                    marginBottom:'0.5rem',
-                    textDecoration:'underline' 
-                  }}
-                >
-                   <div>
-      <a onClick={()=>getData(agreement.title,agreement.content)}>{agreement.title}</a>  
+      <div className="gurado-cart-button" style={{marginTop:'20px'}} >
+        <button
+      style={
+        settingsStore.settings.btn_primary_color === undefined
+          ? { marginBottom: '20px', width: '100%' }
+          : {
+              marginBottom: '20px',
+              width: '100%',
+              // backgroundColor:
+              //   settingsStore.settings.btn_primary_color,
+              // borderColor:
+              //   settingsStore.settings.btn_primary_border_color,
+            }
+      }
       
-      {model === true?<AgreementModal title={tempData[1]} content={tempData[2]} hide={()=>setModel(false)}/>:''}
-
+      onClick={() => cartStore.setShowContactInformationForm(true)}
+    >
+               {t("CONTINUE")}   
+    </button>
     </div>
-                </label>
-              </div>
-            );
-          })}
-
-
-        </div>
-        
-      ) : (
-        <div style={{ width: '100%', marginTop: '15px' }}>
-          Mit dem Klick auf Prüfen und Bezahlen bestätigen Sie die
-          {cartStore.agreementData.map((agreement, a) => {
-            console.info("the content is",agreement.content);
-            return (
-              <span key={`agrmnft${a}`}>
-                {' '}
-                {agreement.title}
-                {a !== cartStore.agreements.length - 1 && <>,</>}{' '}
-              </span>
-            );
-          })}
-          .
-        </div>
-      )}
-
-      <button
-        style={
-          settingsStore.settings.btn_primary_color === undefined
-            ? { marginBottom: '20px', width: '100%' }
-            : {
-                marginBottom: '20px',
-                width: '100%',
-                backgroundColor:
-                  settingsStore.settings.btn_primary_color,
-                borderColor:
-                  settingsStore.settings.btn_primary_border_color,
-              }
-        }
-        disabled={cartStore.paymentLoading}
-        onClick={() => cartStore.handlePayment()}
-      >
-        {!cartStore.paymentLoading ? (
-          <>Prüfen und bezahlen</>
-        ) : (
-          <>
-            <Loader width={30} height={30} type="Circles" />
-          </>
-        )}
-      </button>
     </div>
+    
   );
 });
-export default CartAccordion;
+export default CartAccordion; 

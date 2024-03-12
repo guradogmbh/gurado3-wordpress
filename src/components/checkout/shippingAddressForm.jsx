@@ -1,6 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
+
 
 const ShippingAddressForm = observer(({ cartStore }) => {
+  var { t } = useTranslation();
   return (
     <>
       <div
@@ -12,10 +16,10 @@ const ShippingAddressForm = observer(({ cartStore }) => {
           flexDirection: 'column',
         }}
       >
-        Lieferadresse
-        <input
+          {t("DELIVERY_ADDRESS")}         
+          <input
           type="text"
-          placeholder="Vorname"
+          placeholder={t("FIRSTNAME")}
           autoComplete="shipping given-name"
           onChange={(e) =>
             cartStore.updateShippingAddress(
@@ -27,7 +31,7 @@ const ShippingAddressForm = observer(({ cartStore }) => {
         <input
           type="text"
           style={{ marginTop: '15px' }}
-          placeholder="Nachname"
+          placeholder={t("LASTNAME")}
           autoComplete="shipping family-name"
           onChange={(e) =>
             cartStore.updateShippingAddress(
@@ -46,7 +50,7 @@ const ShippingAddressForm = observer(({ cartStore }) => {
           <input
             style={{ width: '70%' }}
             type="text"
-            placeholder="Straße"
+            placeholder={t("STREET")}
             onChange={(e) =>
               cartStore.updateShippingAddress(
                 'street',
@@ -64,13 +68,13 @@ const ShippingAddressForm = observer(({ cartStore }) => {
                 e.target.value,
               )
             }
-            placeholder="Nr."
+            placeholder={t("BLOCK_NO")}
           />
         </div>
         <input
           type="text"
           style={{ marginTop: '15px' }}
-          placeholder="PLZ"
+          placeholder={t("POSTAL_CODE")}
           onChange={(e) =>
             cartStore.updateShippingAddress(
               'postcode',
@@ -86,13 +90,13 @@ const ShippingAddressForm = observer(({ cartStore }) => {
           onChange={(e) =>
             cartStore.updateShippingAddress('city', e.target.value)
           }
-          placeholder="Ort"
+          placeholder={t("CITY")}
         />
         <select
           style={{ marginTop: '15px' }}
           defaultValue="DE"
           onChange={(e) =>
-            cartStore.updateShippingAddress(
+            cartStore.updateShippingAddress( 
               'country_code',
               e.target.value,
             )

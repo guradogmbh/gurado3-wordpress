@@ -10,6 +10,9 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-booklet/1.5.1/jquery.booklet.min.js" integrity="sha512-5u1Vl8lXG9f4lCgKlW6tU3JmXQ6q/1zHfZG3JwVZBj0C8bSs5vZJx6zQr8mW9i8p3L2RlRl0TmQs3Jb0+L5JQ==" crossorigin="anonymous"></script>
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -31,15 +34,30 @@
       width: 100vw !important;
       padding-top: 200px;
     }
-    #gurado-react{
-      border:1px solid lightgray;
-      width: 860px;
-      margin:0 auto;
+
+    #my-react-container,#my-react-forget-page-container,#my-react-verification-container,#my-react-login-container {  
+      margin-top:20px !important; 
+      margin-bottom:20px !important; 
     }
+    
+    #gurado-react,#my-react-product-list-container,#my-react-my-account-container{
+      border:1px solid lightgray;
+      width: 860px !important;
+      margin:0 auto;
+      margin-top:20px !important; 
+      margin-bottom:20px !important; 
+
+    }
+
   </style>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="my-react-product-list-container"></div> 
+    <div id="my-react-component"></div>
     <div id="gurado-react"></div>
+
+    
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

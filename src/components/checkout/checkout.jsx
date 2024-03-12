@@ -1,9 +1,12 @@
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { Link } from 'react-router-dom';
 import CartStore from '../../store/CartStore';
+import CartBillingAddress from './cartBillingAddress';
+import CartItem from '../../helper/cartItem';
+
 import SettingsStore from '../../store/SettingsStore';
 import BackButton from '../backButton';
 import GuradoLoader from '../Loader';
@@ -11,11 +14,34 @@ import CartAccordion from './cartAccordion';
 import CartNotFound from './cartNotFound';
 import PaymentWall from './paymentWall';
 import TopTabs from './topTabs';
+import { useTranslation } from 'react-i18next';
+
 
 const cartStore = new CartStore();
 const settingsStore = new SettingsStore();
 
+
 const Checkout = observer(({}) => {
+  var { t } = useTranslation();
+  const [showCartPage, setShowCartPage] = useState(false);
+
+
+  const showAddressToggle = async () => {
+    cartStore.setShowPaymentWall(false);
+    cartStore.setShowContactInformationForm(true);
+  } 
+
+  const showCartToggle = async () => {
+    console.info("Cart toogle On");
+    cartStore.setShowPaymentWall(false);
+    cartStore.setShowContactInformationForm(false);
+  //  setShowCartPage(true);
+  }
+
+  // const showBackToggle = aync() => {
+
+  // }
+
   useEffect(() => {
     if (settingsStore.ready) {
       if (
@@ -28,8 +54,12 @@ const Checkout = observer(({}) => {
   }, [settingsStore.ready]);
   useEffect(() => {
     cartStore.init();
+    cartStore.setShowPaymentWall(false);
   }, []);
   useEffect(() => {
+    console.log("cartStore.showPaymentWall",cartStore.showPaymentWall); 
+    console.log("cartStore.showContactInformationForm",cartStore.showContactInformationForm); 
+
     if (
       cartStore.showPaymentWall &&
       settingsStore.settings.automatic_scrolling &&
@@ -50,19 +80,28 @@ const Checkout = observer(({}) => {
   if (!cartStore.found)
     return (
       <div style={{ marginTop: '20px' }}>
+        
         {!cartStore.showPaymentWall ? (
-          <BackButton />
-        ) : (
+          <div
+        style={{ cursor: 'pointer ', marginBottom: '10px' }} 
+        onClick={() => showCartToggle()}
+        >
+        <FontAwesomeIcon
+          icon={faChevronCircleLeft}
+          style={{ position: 'relative', top: '1px' }}
+        />{' '}
+              {t("BACK_TO_CART")}
+        </div>        ) : (
           <>
             <div
               style={{ cursor: 'pointer ', marginBottom: '10px' }}
-              onClick={() => cartStore.setShowPaymentWall(false)}
+              onClick={() => showAddressToggle()}
             >
               <FontAwesomeIcon
                 icon={faChevronCircleLeft}
-                style={{ position: 'relative', top: '1px' }}
+                style={{ position: 'relative', top: '1px' }}   
               />{' '}
-              Zurück zur Addresseingabe
+                {t("BACK_TO_ADDRESS_ENTRY")} 
             </div>
           </>
         )}
@@ -71,36 +110,50 @@ const Checkout = observer(({}) => {
     );
 
   return (
+
     <div style={{ marginTop: '20px' }}>
-      {!cartStore.showPaymentWall ? (
-        <BackButton />
-      ) : (
+      {!cartStore.showPaymentWall && !cartStore.showContactInformationForm? (
+                <BackButton />
+                ) :!cartStore.showPaymentWall? (
         <div
-          style={{ cursor: 'pointer ', marginBottom: '10px' }}
-          onClick={() => cartStore.setShowPaymentWall(false)}
+          style={{ cursor: 'pointer ', marginBottom: '10px' }} 
+          onClick={() => showCartToggle()}
         >
           <FontAwesomeIcon
             icon={faChevronCircleLeft}
             style={{ position: 'relative', top: '1px' }}
           />{' '}
-          Zurück zur Addresseingabe
+                {t("BACK_TO_CART")}
+        </div>
+      ):(
+        <div
+          style={{ cursor: 'pointer ', marginBottom: '10px' }}
+          onClick={() => showAddressToggle()}
+        >
+          <FontAwesomeIcon
+            icon={faChevronCircleLeft}
+            style={{ position: 'relative', top: '1px' }}
+          />{' '}
+                {t("BACK_TO_ADDRESS_ENTRY")}
         </div>
       )}
+
       <TopTabs
-        step={cartStore.showPaymentWall ? '2' : '1'}
+        step={cartStore.showContactInformationForm ?'2':cartStore.showPaymentWall ? '3' : '1' } 
         settingsStore={settingsStore}
       />
-      {!cartStore.showPaymentWall ? (
+      {!cartStore.showPaymentWall && !cartStore.showContactInformationForm ? (
         <CartAccordion
           cartStore={cartStore}
           settingsStore={settingsStore}
-        />
-      ) : (
-        <>
-          <PaymentWall cartStore={cartStore} />
-        </>
+        /> 
+      ) : !cartStore.showPaymentWall? 
+       <CartBillingAddress cartStore={cartStore} settingsStore={settingsStore} />  : (
+        <><PaymentWall cartStore={cartStore}/></> 
       )}
-    </div>
+
+      {/* {showCartPage && <CartAccordion cartStore={cartStore} settingsStore={settingsStore} />} */}
+      </div>
   );
 });
-export default Checkout;
+export default Checkout; 

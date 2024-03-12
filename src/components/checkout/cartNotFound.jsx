@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function CartNotFound() {
+  var {t} = useTranslation(); 
   return (
     <div
       style={{
@@ -9,7 +12,7 @@ export default function CartNotFound() {
         alignItems: 'center',
       }}
     >
-      <h4>Der Warenkorb ist leer</h4>
+      <h4>{t('THE_CART_IS_EMPTY')}</h4>  
     </div>
   );
 }

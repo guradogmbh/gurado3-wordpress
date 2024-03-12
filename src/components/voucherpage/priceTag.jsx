@@ -5,6 +5,7 @@ import FixedPricetag from './priceTags/fixedPricetag';
 import RangePricetag from './priceTags/rangePricetag';
 
 const PriceTag = observer(({ voucherStore, configStore }) => {
+  console.info("configStttt",configStore);
   switch (
     voucherStore.voucher.price_configuration.type.toLowerCase()
   ) {
@@ -20,14 +21,14 @@ const PriceTag = observer(({ voucherStore, configStore }) => {
       return (
         <FixedPricetag
           voucherStore={voucherStore}
-          configStore={configStore}
+          configStore={voucherStore.voucher.price_configuration.amount}
         />
       );
     case 'configurable':
       return (
         <ConfigurablePricetag
           voucherStore={voucherStore}
-          configStore={configStore}
+          configStore={voucherStore.voucher.price_configuration.minimum}
         />
       );
     case 'dropdown':

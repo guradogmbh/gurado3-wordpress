@@ -1,6 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
 
 const RecipientMail = observer(({ configStore }) => {
+  var { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -12,8 +16,8 @@ const RecipientMail = observer(({ configStore }) => {
       <input
         type="email"
         style={{ width: '100%' }}
-        placeholder="E-Mail des Beschenkten"
-        onChange={(e) => configStore.setRecipientMail(e.target.value)}
+        placeholder={t("EMAIL_OF_THE_GIFT_RECIPIENT")}  
+        onChange={(e) => configStore.setRecipientMail(e.target.value)} 
       />
     </div>
   );

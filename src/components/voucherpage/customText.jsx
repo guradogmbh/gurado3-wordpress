@@ -1,6 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
-const CustomText = observer(({ configStore }) => {
+
+const CustomText = observer(({ configStore,voucherStore }) => {
+  const customTextData = localStorage.getItem("custom_text"); 
+  var { t } = useTranslation();
   return (
     <div
       style={{
@@ -10,9 +14,10 @@ const CustomText = observer(({ configStore }) => {
       }}
     >
       <textarea
-        onChange={(e) => configStore.setCustomText(e.target.value)}
-        style={{ width: '100%' }}
-        placeholder="Persönliche Nachricht an den Empfänger"
+        onBlur={(e) => configStore.setCustomText(e.target.value,voucherStore,configStore)} 
+        style={{ width: '100%',height:'100px' }}
+        placeholder={t("PERSONAL_MESSAGE_TO_THE_RECIPIENT")} 
+       defaultValue={customTextData ? customTextData :''} 
       />
     </div>
   );

@@ -2,15 +2,19 @@ import { observer } from 'mobx-react-lite';
 
 const QuantityPicker = observer(({ item, cartStore }) => {
   return (
-    <div
-      style={{
-        width: '140px',
-        height: '40px',
-        display: 'flex',
-        alignItems: 'center',
-        border: '1px solid black',
-      }}
-    >
+          <div
+        style={{
+          width: '120px',
+          height: '36px',
+          display: 'flex',
+          alignItems: 'center',
+          border: '1px solid black',
+          marginTop: '25px',
+          '@media (max-width: 768px)': {
+            marginTop: '5px',
+          },
+        }}
+      >
       <div
         style={{
           height: '100%',
@@ -23,7 +27,7 @@ const QuantityPicker = observer(({ item, cartStore }) => {
           borderRight: '1px solid black',
         }}
         onClick={() =>
-          cartStore.updateQty(item.item_id, parseInt(item.qty) - 1)
+          cartStore.updateQty(item.item_id,parseInt(item.qty) - 1)
         }
       >
         -

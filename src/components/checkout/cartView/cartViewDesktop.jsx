@@ -4,29 +4,39 @@ import { observer } from 'mobx-react-lite';
 import { Fragment, useState } from 'react';
 import Api from '../../../helper/api';
 import QuantityPicker from './quantityPicker';
-import SettingsStore from '../../../store/SettingsStore';
 import Loader from 'react-loader-spinner';
+import { Trans,useTranslation } from 'react-i18next';
+import SettingsStore from '../../../store/SettingsStore';
+
 
 
 
 const API = new Api();
-const settingsStore = new SettingsStore();
+const settingsStore = new SettingsStore(); 
 
 const CartViewDesktop = observer(({ cartStore }) => {
+  console.info("cart view desktopp");
   const [loading, setLoading] = useState(false);
    // State to store value from the input field
    const [inputValue, setInputValue] = useState("");
 
    
+   var { t } = useTranslation();
+   var {mm} =  'ddddeeeffff'; 
 
   return (
     <div style={{ width: '100%' }}>
       <div
         style={{ width: '100%', display: 'flex', fontSize: '18px' }}
       >
-        <div style={{ width: '66.66666%' }}>Artikel</div>
-        <div style={{ width: '16.66666%' }}>Einzelpreis</div>
-        <div style={{ flexGrow: '1' }}>Betrag</div>
+        <div style={{ width: '53%' }}>{t("ARTICLE")}
+</div>
+<div style={{ width: '17%' }}>{t("QUANTITY")}
+</div>
+        <div style={{ width: '13%' }}>{t("PRICE")}
+</div>
+        <div style={{ flexGrow: '1' }}>{t("AMOUNT")}  
+</div>
       </div>
       <hr style={{ width: '100%' }} />
       {cartStore.cart.items.map((item, i) => {
@@ -64,7 +74,7 @@ const CartViewDesktop = observer(({ cartStore }) => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => cartStore.deleteItem(item.item_id)}
                   />{' '}
-                  Löschen
+                  {t("DELETE")}
                 </span>
               </div>
               <div
@@ -137,10 +147,10 @@ const CartViewDesktop = observer(({ cartStore }) => {
           (<div className='col-lg-6'>
             <span style={{ display: 'block' }}>
               <div>
-                Rabattcodes:
+              {t("DISCOUNT_CODES")}
               </div>
               <div style={{ marginTop: '15px' }}>
-                Wenn Du einen Rabattcode besitzt, trage diesen bitte hier ein.
+              {t("IF_YOU_HAVE_A_DISCOUNT_CODE_PLEASE_ENTER_IT_HERE")}
               </div>
               
               {cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code ? (
@@ -149,6 +159,8 @@ const CartViewDesktop = observer(({ cartStore }) => {
                 type="text"
                 placeholder=""
                 autoComplete="false"
+                className="gurado-storefront-form-control"
+                style={{height:'50px'}}
                 value={cartStore.cart && cartStore.cart.redemptions && cartStore.cart.redemptions.length && cartStore.cart.redemptions[0].code?cartStore.cart.redemptions[0].code:''}
                 onChange={(e) =>
                   cartStore.setCouponCode(
@@ -162,18 +174,18 @@ const CartViewDesktop = observer(({ cartStore }) => {
                 <button
                   style={
                     settingsStore.settings.btn_primary_color === undefined
-                      ? { width: '100%', marginTop: '30px' }
+                      ? { width: '100%', marginTop: '30px', }
                       : {
                         width: '100%',
                         marginTop: '30px',
-                        backgroundColor:
-                          settingsStore.settings.btn_primary_color,
+                        // backgroundColor:
+                        //   settingsStore.settings.btn_primary_color,
                       }
                   }
                   onClick={cartStore.deleteCouponFromCart.bind(this,cartStore.cart.redemptions[0].redemption_id)}  >
 
                   {!cartStore.redeemLoading ? (
-                    <>Rabattcode stornieren</>
+                    <>{t("CANCEL_DISCOUNT_CODE")}</> 
                       ) : (
                         <>
                           <Loader width="30" color="white"
@@ -188,6 +200,8 @@ const CartViewDesktop = observer(({ cartStore }) => {
                      type="text"
                      placeholder=""
                      autoComplete="false"
+                     className='gurado-storefront-form-control'
+                     style={{height:'50px'}} 
                      onChange={(e) =>
                        cartStore.setCouponCode(
                          'gurado_coupon_code', 
@@ -200,20 +214,21 @@ const CartViewDesktop = observer(({ cartStore }) => {
                 
                 <button
                   style={
-                    settingsStore.settings.btn_primary_color === undefined
-                      ? { width: '100%', marginTop: '30px' }
+                    settingsStore.settings.btn_primary_color === undefined 
+                      ? { width: '100%', marginTop: '30px'}
                       : {
                         width: '100%',
                         marginTop: '30px',
-                        backgroundColor:
-                          settingsStore.settings.btn_primary_color,
+                        // backgroundColor:
+                        //   settingsStore.settings.btn_primary_color,
+                        
                       }
                   }
                   onClick={cartStore.cartRedemption} 
                  
                 >
                   {!cartStore.redeemLoading ? (
-                    <>Rabattcode einlösen</>
+                    <>{t("REDEEM_DISCOUNT_CODE")}</> 
                       ) : (
                         <>
                           <Loader width="30"
@@ -231,7 +246,7 @@ const CartViewDesktop = observer(({ cartStore }) => {
           <div className={cartStore.cart && cartStore.cart.can_apply_redemption && cartStore.cart.can_apply_redemption == 'YES'?'col-lg-6':'col-lg-12'} style={{ textAlign: 'right',marginLeft:'-58px' }}>
             <span style={{ display: 'inline-flex',marginTop: '30px' }}>
               <div>
-                Zwischensumme:
+              {t("SUBTOTAL")}              
               </div>
               <div style={{
                 paddingLeft: '15px',
@@ -244,6 +259,8 @@ const CartViewDesktop = observer(({ cartStore }) => {
             </span>
             <br></br>
             {cartStore.cart.taxes.map((tax, t) => {
+              var { trans } = useTranslation();
+
               return (
                 <div
                   key={`gtax${t}`}
@@ -251,7 +268,7 @@ const CartViewDesktop = observer(({ cartStore }) => {
                   <span style={{ display: 'inline-flex' }}>
 
                     <div>
-                      inkl. MwSt ({tax.rate}%):
+                    <Trans t={t}>TAX_INCLUDED</Trans> : ({tax.rate}%):
                     </div>
                     <div style={{
                       paddingLeft: '15px',
@@ -265,8 +282,11 @@ const CartViewDesktop = observer(({ cartStore }) => {
               );
             })}
 
-
             {cartStore.cart.redemptions.map((redemption, t) => {
+              //   var {mm} =  'ddddeeeffff';
+
+
+              var { trans } = useTranslation();
               return (
                 <div
                   key={`gtax${t}`}
@@ -274,7 +294,7 @@ const CartViewDesktop = observer(({ cartStore }) => {
                   <span style={{ display: 'inline-flex' }}>
 
                     <div>
-                      Rabatt  ({redemption.code}):
+                      <Trans t={t}>DISCOUNT</Trans>:  ({redemption.code}):
                     </div>
                     <div style={{
                       paddingLeft: '15px',
@@ -290,7 +310,7 @@ const CartViewDesktop = observer(({ cartStore }) => {
 
             <span style={{ display: 'inline-flex',marginTop: '30px' }}>
               <div>
-                <b>Gesamtsumme</b>:
+                <b>{t("TOTAL")}</b>:
               </div>
               <div style={{
                 paddingLeft: '15px',

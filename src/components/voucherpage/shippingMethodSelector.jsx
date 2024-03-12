@@ -1,19 +1,22 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
 
 const ShippingMethodSelector = observer(
   ({ voucherStore, settingsStore }) => {
+    var { t } = useTranslation();
     return (
       <div style={{ width: '100%', marginTop: '40px' }}>
-        <h3
+        <h5
           style={{
-            color:
-              settingsStore.settings.header_color === undefined
-                ? 'black'
-                : settingsStore.settings.header_color,
+            // color:
+            //   settingsStore.settings.header_color === undefined
+            //     ? ''
+            //     : settingsStore.settings.header_color,
           }}
         >
-          Versandmethode wählen
-        </h3>
+          {t("CHOOSE_SHIPPING_METHOD")} 
+        </h5>
         <div style={{ width: '100%', display: 'flex' }}>
           <div
             style={{
@@ -30,17 +33,17 @@ const ShippingMethodSelector = observer(
                     }
                   : {
                       width: '100%',
-                      borderColor:
-                        voucherStore.shippingMethod === 'virtual'
-                          ? settingsStore.settings
-                              .btn_primary_border_color
-                          : settingsStore.settings
-                              .btn_secondary_border_color,
-                      backgroundColor:
-                        voucherStore.shippingMethod === 'virtual'
-                          ? settingsStore.settings.btn_primary_color
-                          : settingsStore.settings
-                              .btn_secondary_color,
+                      // borderColor:
+                      //   voucherStore.shippingMethod === 'virtual'
+                      //     ? settingsStore.settings
+                      //         .btn_primary_border_color
+                      //     : settingsStore.settings
+                      //         .btn_secondary_border_color,
+                      // backgroundColor:
+                      //   voucherStore.shippingMethod === 'virtual'
+                      //     ? settingsStore.settings.btn_primary_color
+                      //     : settingsStore.settings
+                      //         .btn_secondary_color,
                     }
               }
               onClick={() =>
@@ -56,7 +59,7 @@ const ShippingMethodSelector = observer(
                       : settingsStore.settings.btn_font_color,
                 }}
               >
-                E-Mail
+          {t("EMAIL")} 
               </span>
             </button>
           </div>
@@ -70,17 +73,17 @@ const ShippingMethodSelector = observer(
                     }
                   : {
                       width: '100%',
-                      borderColor:
-                        voucherStore.shippingMethod === 'physical'
-                          ? settingsStore.settings
-                              .btn_primary_border_color
-                          : settingsStore.settings
-                              .btn_secondary_border_color,
-                      backgroundColor:
-                        voucherStore.shippingMethod === 'physical'
-                          ? settingsStore.settings.btn_primary_color
-                          : settingsStore.settings
-                              .btn_secondary_color,
+                      // borderColor:
+                      //   voucherStore.shippingMethod === 'physical'
+                      //     ? settingsStore.settings
+                      //         .btn_primary_border_color
+                      //     : settingsStore.settings
+                      //         .btn_secondary_border_color,
+                      // backgroundColor:
+                      //   voucherStore.shippingMethod === 'physical'
+                      //     ? settingsStore.settings.btn_primary_color
+                      //     : settingsStore.settings
+                      //         .btn_secondary_color,
                     }
               }
               onClick={() =>
@@ -96,7 +99,7 @@ const ShippingMethodSelector = observer(
                       : settingsStore.settings.btn_font_color,
                 }}
               >
-                Post
+              {t("POST")} 
               </span>
             </button>
           </div>

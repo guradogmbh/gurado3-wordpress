@@ -20,8 +20,11 @@ export default class VoucherListStore {
   }
 
   loadVouchers = () => {
+    console.info("in load vvv");
     this.API.getVoucherList().then((list) => {
       runInAction(() => {
+        console.info("list is as follow=>",list);
+
         this.vouchers = list;
         this.ready = true;
       });

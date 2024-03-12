@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-export default function SuccessPage() {
+export default function SuccessPage() { 
   localStorage.setItem('billing_address',{});
   localStorage.clear();
   sessionStorage.setItem('cart_qty', 0);  
+
+  var { t } = useTranslation();
+  //CartStore.setShowPaymentWall(false);  
+
+
  
   return (
     <div
@@ -17,10 +23,9 @@ export default function SuccessPage() {
       }}
     >
       <p style={{ fontSize: '16pt' }}>
-        Vielen Dank für ihre Bestellung
-      </p>
+      {t("THANK_YOU_FOR_YOUR_ORDER")}       </p>
       <Link to="/">
-        <button>Zurück zu den Gutscheinen</button>
+        <button>{t("BACK_TO_THE_VOUCHERS")}</button>
       </Link>
     </div>
   );

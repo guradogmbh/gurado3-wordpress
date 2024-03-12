@@ -1,6 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
 
 const SenderName = observer(({ configStore }) => {
+  var { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -12,7 +16,7 @@ const SenderName = observer(({ configStore }) => {
       <input
         type="text"
         style={{ width: '100%' }}
-        placeholder="Name des Beschenkten"
+        placeholder={t("NAME_OF_THE_GIFT_RECIPIENT")}
         onChange={(e) => configStore.setSenderName(e.target.value)}
       />
     </div>
