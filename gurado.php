@@ -2,7 +2,7 @@
 /**
  * Plugin Name: gurado3
  * Description: Das Gutschein & Ticketingsystem
- * Version: 0.1.9
+ * Version: 0.1.10
  * Author: gurado GmbH
  * Author URI: https://site.gurado.de/
  */
@@ -155,7 +155,7 @@ function checkout_step_color_text_render(){
 function checkout_step_color_secondary_render(){
      $options = get_option('gurado_general_settings');
   if(!$options["checkout_step_color_secondary"]){
-    $options["checkout_step_color_secondary"] = "#6c757d";
+    $options["checkout_step_color_secondary"] = "#6c757d"; 
   }
   ?>
     <input type="color" name='gurado_general_settings[checkout_step_color_secondary]' value='<?php echo $options["checkout_step_color_secondary"]?>'/>
