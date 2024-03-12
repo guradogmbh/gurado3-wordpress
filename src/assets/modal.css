@@ -1,0 +1,35 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Backdrop color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding:5px;
+  }
+  
+  .close-button {
+    font-size: 35px;
+    opacity: 1;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-weight: 600;
+    color:black;
+    }
+
+    .gr-mobile-close-button {
+      font-size: 30px;
+      opacity: 1;
+      position: absolute;
+      top: -19px;
+      right: -1px;
+      font-weight: 600; 
+    }

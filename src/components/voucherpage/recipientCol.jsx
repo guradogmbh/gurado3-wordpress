@@ -1,6 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
 
 const RecipientCol = observer(({ configStore }) => {
+  var { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -16,7 +20,7 @@ const RecipientCol = observer(({ configStore }) => {
           minWidth: '33.333333%',
         }}
       >
-        Empfänger:
+       {t("RECIPIENT")}
       </div>
       <div
         style={{
@@ -32,7 +36,7 @@ const RecipientCol = observer(({ configStore }) => {
           onClick={(e) => configStore.setRecipient(e.target.value)}
         />
         <label style={{ marginLeft: '5px' }} htmlFor="recipient1">
-          ich
+        {t("I")}
         </label>
         <input
           style={{ marginLeft: '30px' }}
@@ -45,7 +49,7 @@ const RecipientCol = observer(({ configStore }) => {
           }}
         />
         <label style={{ marginLeft: '5px' }} htmlFor="recipient2">
-          der Beschenkte
+        {t("THE_RECIPIENT")} 
         </label>
       </div>
     </div>

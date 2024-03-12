@@ -22,6 +22,8 @@ export default class VoucherConfigurationStore {
       init: action,
       recipientName: observable,
       setRecipientName: action,
+     // previewImage: observable,
+    //  setPreviewImage: action, 
       recipientMail: observable,
       setRecipientMail: action,
       customText: observable,
@@ -72,10 +74,22 @@ export default class VoucherConfigurationStore {
     }
   };
 
-  setCustomText = (text) => {
+  setCustomText = (text,voucherStore,configStore) => {
     runInAction(() => {
       this.customText = text;
-    });
+      const timeoutId = setTimeout(() => {
+        console.info("in set timeout",voucherStore); 
+
+        voucherStore.getPreview(voucherStore,voucherStore.templateId,this.customText,configStore.price) ;
+        localStorage.setItem('custom_text',text);   
+      }, 1000);
+  
+      return () => {
+        console.info("in clear timeout"); 
+        clearTimeout(timeoutId);
+      };
+    //  console.log("custom text=>",this.customText);
+      });
   };
 
   setRecipientMail = (mail) => {

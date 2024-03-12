@@ -1,0 +1,616 @@
+@import "bootstrap/scss/bootstrap-grid"; 
+@import "bootstrap/scss/_grid.scss";
+@import "bootstrap/scss/_mixins.scss";
+@import "bootstrap/scss/_buttons.scss";      
+
+$grid-prefix:'gurado-storefront-col-';
+$custom-prefix: 'gurado-storefront'; 
+
+$breakpoint-map: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+$enable-grid-classes: true;
+$grid-breakpoint-sizes: (
+  1: 8.33333333%,
+  2: 16.66666667%,
+  3: 25%,
+  4: 33.33333333%,
+  5: 41.66666667%,
+  6: 50%,
+  7: 58.33333333%,
+  8: 66.66666667%,
+  9: 75%,
+  10: 83.33333333%,
+  11: 91.66666667%,
+  12: 100%
+);
+@each $breakpoint in map-keys($breakpoint-map) {
+  @each $size in map-keys($grid-breakpoint-sizes) {
+    .#{$grid-prefix}#{$breakpoint}-#{$size} {
+      @extend .col-#{$breakpoint}-#{$size} !optional;  
+    }
+  }
+} 
+
+
+.gurado-storefront-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1060;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+  background-color: rgba(0,0,0,.5);
+}
+
+.gurado-storefront-modal-dialog {
+  position: relative;
+  width: auto;
+  margin: .5rem;
+  pointer-events: none;
+}
+
+.gurado-storefront-modal {
+  &.fade .modal-dialog {
+    transition: transform .3s ease-out;
+    transform: translate(0, -50px);
+  }
+
+  &.show .modal-dialog {
+    transform: none;
+  }
+
+  &.modal-static .modal-dialog {
+    transform: scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal.fade .modal-dialog {
+    transition: none;
+  }
+}
+
+.gurado-storefront-modal-dialog-scrollable { 
+  height: calc(100% - 1rem);
+
+  .gurado-storefront-modal-content {
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  .gurado-storefront-modal-body {
+    overflow-y: auto;
+  }
+}
+
+.gurado-storefront-modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 1rem);
+}
+
+.gurado-storefront-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: .3rem;
+  outline: 0;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.gurado-storefront-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+
+  &.fade {
+    opacity: 0;
+  }
+
+  &.show {
+    opacity: .5;
+  }
+}
+
+.gurado-storefront-modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(.3rem - 1px);
+  border-top-right-radius: calc(.3rem - 1px);
+
+  .btn-close {
+    padding: .5rem .5rem;
+    margin: -.5rem -.5rem -.5rem auto;
+  }
+}
+
+.gurado-storefront-modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.gurado-storefront-modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.gurado-storefront-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: .75rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: calc(.3rem - 1px);
+  border-bottom-left-radius: calc(.3rem - 1px);
+
+  > * {
+    margin: .25rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .gurado-storefront-modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+
+  .gurado-storefront-modal-dialog-scrollable {
+    height: calc(100% - 3.5rem);
+  }
+
+  .gurado-storefront-modal-dialog-centered {
+    min-height: calc(100% - 3.5rem);
+  }
+
+  .gurado-storefront-modal-sm {
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .gurado-storefront-modal-lg, .gurado-storefront-modal-xl {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .gurado-storefront-modal-xl {
+    max-width: 1140px;
+  }
+}
+
+.gurado-storefront-modal-fullscreen {
+  width: 100vw;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+
+  .gurado-storefront-modal-content {
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .gurado-storefront-modal-header {
+    border-radius: 0;
+  }
+
+  .gurado-storefront-modal-body {
+    overflow-y: auto;
+  }
+
+  .gurado-storefront-modal-footer {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .gurado-storefront-modal-fullscreen-sm-down {
+    width: 100vw;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+
+    .gurado-storefront-modal-content {
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-header {
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-body {
+      overflow-y: auto;
+    }
+
+    .gurado-storefront-modal-footer {
+      border-radius: 0;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gurado-storefront-modal-fullscreen-md-down {
+    width: 100vw;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+
+    .gurado-storefront-modal-content {
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-header {
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-body {
+      overflow-y: auto;
+    }
+
+    .gurado-storefront-modal-footer {
+      border-radius: 0;
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  .gurado-storefront-modal-fullscreen-lg-down {
+    width: 100vw;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+
+    .gurado-storefront-modal-content {
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-header {
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-body {
+      overflow-y: auto;
+    }
+
+    .gurado-storefront-modal-footer {
+      border-radius: 0;
+    }
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .modal-fullscreen-xl-down {
+    width: 100vw;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+
+    .gurado-storefront-modal-content {
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-header {
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-body {
+      overflow-y: auto;
+    }
+
+    .gurado-storefront-modal-footer {
+      border-radius: 0;
+    }
+  }
+}
+
+@media (max-width: 1399.98px) {
+  .gurado-storefront-modal-fullscreen-xxl-down {
+    width: 100vw;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+
+    .gurado-storefront-modal-content {
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-header {
+      border-radius: 0;
+    }
+
+    .gurado-storefront-modal-body {
+      overflow-y: auto;
+    }
+
+    .gurado-storefront-modal-footer {
+      border-radius: 0;
+    }
+  }
+}
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: .25em .25em;
+  color: #000;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") (center / 1em) auto no-repeat;
+  border: 0;
+  border-radius: .25rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  font-size: 16px;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+}
+
+.entry-content a:hover {
+  text-decoration: underline !important;
+}
+
+
+
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em 0.25em;
+  color: #000;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+}
+
+.gurado-storefront-modal-close {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  font-size: 16px;
+}
+
+.modal-close:hover {
+  background-color: transparent !important;
+}
+
+.gurado-storefront-row { 
+  @extend .row;
+}
+
+  .gurado-storefront-form-control {
+      display: block;
+      width: 100%;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border-radius: .25rem;
+      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+   } 
+  
+  .alice-carousel { 
+    width: 100%;
+    max-width: 970px;
+    margin: 0 !important;
+  
+    &__stage-item {
+      cursor: pointer !important;
+      text-align: center !important;
+      width: 120px !important;
+      /* margin-right: 5px !important; */
+    }
+  
+    &__stage {
+      margin: 0 !important;
+    }
+  
+    &__prev-btn-item {
+      position: absolute;
+      top: 30%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 24px;
+      padding: 8px;
+      border: none;
+      cursor: pointer;
+      display: block !important; 
+      left: -20px;
+    }
+  
+    &__stage-item.__active {
+      border-radius: 3px !important;
+      width: 120px !important;
+    }
+  }
+
+  .gurado-storefront-close-button {
+    font-size: 35px;
+    opacity: 1;
+    position: absolute;
+    right: 4px;
+    font-weight: 800;
+    color:black;
+    z-index:99999 !important;
+    cursor: pointer;
+    top:-15px;
+    }
+
+    #gurado-react {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+  .gurado-storefront-gr-mobile-close-button {  
+    font-size: 30px;
+    opacity: 1;
+    position: absolute;
+    top: -19px;
+    right: -1px;
+    font-weight: 600; 
+  }
+
+  .gurado-storefront-left-panel {
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 20%;
+      position: absolute;
+      height: 100%;
+      overflow: auto;
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+  
+    li {
+      a {
+        cursor: pointer;
+        position: relative;
+        list-style: none;
+        padding: 8px 0;
+        display: block;
+        text-decoration: none !important;
+  
+        &.active {
+          font-weight: 600;
+          text-decoration: none !important;
+        }
+  
+        &:hover:not(.active) {
+          font-weight: 600;
+          text-decoration: none !important;
+        }
+      }
+    }
+  }
+
+  .gurado-storefront-flip-book { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    &:first-child {
+      justify-content: flex-start;
+    }
+  
+    &:last-child {
+      justify-content: flex-end;
+    }
+  }
+
+  .gurado-storefront-form-control{
+    min-height: 35px !important;
+  }
+
+  .gurado-date-picker {
+    .react-datepicker-wrapper {
+      display: block !important;
+      height: 50px;
+      width: 100%;
+    }
+  }
+  
+  .gurado-prev-button,
+  .gurado-next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ccc;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .gurado-prev-button {
+    left: 10px;
+  }
+  
+  .gurado-next-button {
+    right: 10px;
+  }
+
+  #my-react-login-container {
+    align-content: center;
+    display: grid;
+    justify-content: center;
+    justify-items: center; 
+  } 
+
+  #my-react-container,
+  #my-react-forget-page-container,
+  #my-react-verification-container,
+  #my-react-login-container,
+  #my-react-login-page-container,
+  #my-react-my-account-container {
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+#gurado-payments-container {  
+  display:flex !important;
+  justify-content: center !important;
+  align-items: center !important; 
+  width:750px;
+}
+
+ .gurado-storefront-date-picker { 
+  height:50px;
+  margin-bottom:16px;
+ }
+
+ .gurado-storefront-date-picker .react-datepicker-wrapper {
+  display:block !important;
+ }

@@ -5,12 +5,14 @@ import {
   observable,
   runInAction,
 } from 'mobx';
+import AgreementModal from '../components/voucherpage/agreementModal';
 import Api from '../helper/api';
 
 export default class CartStore {
   ready = false;
   found = false;
   cart = null;
+  agreementData = []; 
   reloading = false;
   API = new Api();
   countries = [];
@@ -26,6 +28,7 @@ export default class CartStore {
   clientId = null;
   requiresAgreements = false;
   showPaymentWall = false;
+  showContactInformationForm = false;
   scriptSet = false;
   agreements = [];
   agreementsChecked = [];
@@ -37,6 +40,7 @@ export default class CartStore {
       reloadCart: action,
       updateQty: action,
       cart: observable,
+      agreementData:observable, 
       countries: observable,
       reloading: observable,
       countriesReady: observable,
@@ -58,6 +62,8 @@ export default class CartStore {
       handlePayment: action,
       showPaymentWall: observable,
       setShowPaymentWall: action,
+      showContactInformationForm:observable,
+      setShowContactInformationForm:action, 
       scriptSet: observable,
       setScriptSet: action,
       
@@ -76,7 +82,17 @@ export default class CartStore {
     });
   };
 
+  setShowContactInformationForm = (p) => {
+    console.info("pth value is as follow=>",p);
+
+    runInAction(() => {
+      this.showContactInformationForm = p; 
+    });
+
+  };
+
   handlePayment = () => {
+    console.info("in handle payment123");
     runInAction(() => {
       this.paymentLoading = true;
     });
@@ -109,9 +125,12 @@ export default class CartStore {
     }
     this.API.setBillingAddress(this.billingAddress);
     this.API.sendAddress().then((res) => {
+      console.info("the result is 12345",res);
       runInAction(() => {
+        console.info("In run action 12345");
         this.paymentLoading = false;
         this.showPaymentWall = true;
+        this.showContactInformationForm = false;
       });
     });
   };
@@ -119,8 +138,10 @@ export default class CartStore {
   setAgreementsChecked = (num, c) => {
     runInAction(() => {
       this.agreementsChecked[num] = c;
-      console.log(this.agreementsChecked[num]);
-    });
+      console.log("set agreements",this.agreementsChecked[num]);
+<AgreementModal
+            //closeModal={() => this.closeModal()}
+            isOpen={true}/>    }); 
   };
 
   updateUseForShipping = () => {
@@ -138,6 +159,7 @@ export default class CartStore {
   updateBillingAddress = (key, value) => {
     runInAction(() => {
       this.billingAddress[key] = value;
+     
     });
   };
 
@@ -203,6 +225,25 @@ export default class CartStore {
     });
   }
 
+  // getAgreementContent = (agreement_id) => {
+  //  // this.redeemLoading = true;
+  //   console.info("test1235 agreement_id",agreement_id);
+
+  //   this.API.getAgreementData(agreement_id).then((res) => { 
+  //   //  this.setCouponCode('gurado_coupon_code','');
+  //     //document.getElementById('gurado_coupon_code').reset(); 
+  //     this.agreementData = res;
+
+  //     return JSON.parse(res).content;
+
+  //   //  return res;
+  //     console.info ("the result is=>",res);
+  //   //  this.reloadCart();  
+  //    // this.redeemLoading = false;
+  //    // document.getElementById('gurado_coupon_code').value = ''; 
+  //   });
+  // }
+
   updateQty = (item_id, qty) => {
     let index = this.cart.items.findIndex(
       (item) => item.item_id === item_id,
@@ -244,15 +285,65 @@ export default class CartStore {
     }
     if (this.agreements.length === 0) {
       this.API.getAgreements().then((agreements) => {
+        console.log("agreements are",agreements);
         runInAction(() => {
           this.agreements = agreements;
+          this.agreements.forEach(data=>{
+          //  this.agreementData['agreement_id'] = data.agreement_id;
+            //this.agreementData.push({agreement_id:data.agreement_id,title:data.title})
+         //   this.agreementData['title'] = data.title;
+            console.info("the main data is",data.agreement_id);
+                this.API.getAgreementData(data.agreement_id).then((res) => {  
+              //  this.agreementData = JSON.parse(res.data).content;
+              this.agreementData.push({agreement_id:data.agreement_id,title:data.title,content:JSON.parse(res.data).content})
+
+             // this.agreementData.push({content:JSON.parse(res.data).content}); 
+
+                //this.agreementData['content'] = JSON.parse(res.data).content; 
+                console.info("the main data is this.agreementData",this.agreementData); 
+
+                 })
+
+                 console.info("the agreement final array is",this.agreementData);
+
+          });
+
+
           for (let i = 0; i < agreements.length; i++) {
             this.agreementsChecked[i] = false;
           }
           this.agreementsReady = true;
         });
       });
-    }
+
+      // this.API.getAgreementData(1).then((res) => {  
+      //   runInAction(() => {
+      //   //  this.setCouponCode('gurado_coupon_code','');
+      //     //document.getElementById('gurado_coupon_code').reset(); 
+      //     this.agreementData = Object.entries(res);  
+    
+      //   //  return JSON.parse(res).content;
+    
+      //   //  return res;
+         
+      //   //  this.reloadCart();  
+      //    // this.redeemLoading = false;
+      //    // document.getElementById('gurado_coupon_code').value = ''; 
+      //   });
+      // });
+
+      // this.API.getAgreement().then((agreements) => {
+      //   console.log("agreements 12345 are",agreements);
+      //   runInAction(() => {
+      //     this.agreements = agreements;
+      //     for (let i = 0; i < agreements.length; i++) {
+      //       this.agreementsChecked[i] = false;
+      //     }
+      //     this.agreementsReady = true;
+      //   });
+      // });
+    } 
+
     this.API.getCart().then((res) => {
       console.log(res);
       runInAction(() => {

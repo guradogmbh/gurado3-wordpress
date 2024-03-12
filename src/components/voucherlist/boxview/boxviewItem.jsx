@@ -5,10 +5,10 @@ import PriceConfigurationLabel from '../priceConfigurationLabel';
 import { Link } from 'react-router-dom';
 
 const BoxViewItemContainer = styled.div`
-  width: 310px;
-  height: 270px;
+  width: 288px;
+  height: 233px;
   margin: 15px;
-  background-color: rgb(246, 247, 248);
+  background-color: rgb(246, 247, 248);  
   cursor: pointer;
 `;
 const ImgDiv = styled.div`
@@ -19,23 +19,21 @@ const ImgDiv = styled.div`
     -webkit-transition: 0.3s ease-in-out;
     transition: 0.3s ease-in-out;
   }
-  :hover img {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-    max-height: 174.38px !important;
-  }
+
   overflow: hidden;
 `;
 const PriceConfiguration = styled.span`
-  color: darkblue;
   font-size: 10pt;
   @media only screen and (max-width: 578px) {
     font-size: 8pt;
   }
 `;
 
+console.info("in box view item");
+
 const BoxViewItem = observer(({ voucher, settingsStore }) => {
   const voucherItem = new Voucher(voucher);
+  console.info("voucherItem is as follow=>",voucherItem);
   return (
     <Link
       to={'/voucher/' + voucherItem.getUrlKey()}
@@ -45,31 +43,27 @@ const BoxViewItem = observer(({ voucher, settingsStore }) => {
         <ImgDiv>
           <img
             src={voucherItem.image_url}
-            style={{ width: '100%', height: '174.38px' }}
+            style={{ width: '288px', height: '162px' }}
           />
         </ImgDiv>
-        <div
+        <a
           style={{
             textAlign: 'center',
-            fontSize: '13pt',
-            marginTop: '5px',
-            color:
-              settingsStore.settings.header_color === undefined
-                ? 'black'
-                : settingsStore.settings.header_color,
-            minHeight: '31px',
+            minHeight: '31px', 
+            display:'grid',
+            width:'100%',
           }}
         >
           <b>{voucherItem.name}</b>
-        </div>
-        <p style={{ textAlign: 'center', color: 'darkblue' }}>
+        <span style={{ textAlign: 'center'}}>
           <PriceConfiguration>
             <PriceConfigurationLabel
               p={voucherItem.getPriceConfiguration()}
               v={voucherItem}
             />
           </PriceConfiguration>
-        </p>
+        </span> 
+        </a> 
       </BoxViewItemContainer>
     </Link>
   );

@@ -79,15 +79,16 @@ export default class Api {
   };
 
   getAgreements = async () => {
+    var defaultLanguage = window.gurado_js_ajax.urls.language;
     return new Promise(async (resolve, reject) => {
       axios
         .get(
-          this.proxy_url + '?endpoint=/getAgreements',
+          this.proxy_url + '?endpoint=/getAgreements&defaultLanguage='+defaultLanguage,
           {
             headers: {
-              'Cache-Control': 'no-store',
+              'Cache-Control': 'no-store', 
               'Pragma': 'no-cache',
-              'Expires': '0'
+              'Expires': '0',
             }
           }
         )
@@ -97,7 +98,7 @@ export default class Api {
     });
   };
 
-  updateQty = async (item_id, qty) => {
+  updateQty = async (item_id, qty) => { 
     return new Promise(async (resolve, reject) => {
       if (this.cart_id === undefined || this.cart_id === null) {
         this.cart_id = sessionStorage.getItem('cart_id');
@@ -137,12 +138,13 @@ export default class Api {
   };
 
   getAgreement = async (agreementId) => {
+    var defaultLanguage = window.gurado_js_ajax.urls.language;
     return new Promise(async (resolve, reject) => {
       axios
         .get(
           this.proxy_url +
           '?endpoint=/getAgreement&agreementId=' +
-          agreementId,
+          agreementId+'&defaultLanguage='+defaultLanguage,  
           {
             headers: {
               'Cache-Control': 'no-store',
@@ -188,6 +190,54 @@ export default class Api {
     });
   };
 
+  getPreview = async (voucherData,currentTemplateId,customMessage,configStore) => {
+    console.info("the selected Options is as follow=>",voucherData.chosenOptions.options);
+    console.info("the voucherPreview is as follow=>",voucherData.voucher);
+    console.info("the voucherPreview is as follow=>",voucherData.voucher.amount);
+    console.info("the configStore is as follow1111=>",configStore);  
+    let request_body = {};
+
+    // configStore.price
+
+    if (this.cart_id === undefined || this.cart_id === null) { 
+      this.cart_id = sessionStorage.getItem('cart_id');
+    }
+    if(voucherData.shippingMethod == 'virtual') {
+       request_body = 
+      {"sku":voucherData.voucher.sku,"delivery_type":voucherData.shippingMethod,"amount":parseFloat(configStore),"qty":1,"virtual_voucher_design_template_id":currentTemplateId,"deliver_to":"self","personalized_message":customMessage,"delivery_speed":"immediate"}; 
+
+      if(voucherData && voucherData.chosenOptions && voucherData.chosenOptions.options && voucherData.chosenOptions.options.length > 0) {
+        request_body.options = voucherData.chosenOptions;
+      }
+
+    } else if(voucherData.shippingMethod == 'physical') {
+        request_body = 
+      {"sku":voucherData.voucher.sku,"delivery_type":voucherData.shippingMethod,"amount":parseFloat(configStore),"qty":1,"physical_voucher_design_template_id":currentTemplateId,"deliver_to":"self","personalized_message":customMessage,"delivery_speed":"immediate"}; 
+    }
+   
+
+    return new Promise(async (resolve, reject) => {
+      axios
+        .get(
+          this.proxy_url +
+          '?endpoint=/previewTemplate&cartId=' + 
+          this.cart_id+
+          '&couponCode=' +
+          JSON.stringify(request_body), 
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
+        .then((data) => {
+
+          resolve(data);
+        });
+    });  }
+
   
   deleteCouponFromCart = async (redemptionId) => { 
     console.info("in cart redemption12345",redemptionId); 
@@ -221,6 +271,7 @@ export default class Api {
   };
 
   getAgreementData = async (agreementId) => { 
+    var defaultLanguage = window.gurado_js_ajax.urls.language;
     console.info("in cart agreementId",agreementId); 
     if (this.cart_id === undefined || this.cart_id === null) {
       this.cart_id = sessionStorage.getItem('cart_id');
@@ -234,7 +285,7 @@ export default class Api {
         .get(
           this.proxy_url +
           '?endpoint=/getAgreement&agreementId=' +
-          agreementId,  
+          agreementId+'&defaultLanguage='+defaultLanguage,  
           {
             headers: {
               'Cache-Control': 'no-store',
@@ -244,7 +295,7 @@ export default class Api {
           }
         )
         .then((data) => {
-          resolve(data);
+          resolve(data); 
         });
     });
   };
@@ -350,15 +401,20 @@ export default class Api {
   };
 
   getCountries = async () => {
+    var defaultLanguage = window.gurado_js_ajax.urls.language;
+    console.info("defaultLanguage is as follow123=>",defaultLanguage);
+
     return new Promise(async (resolve, reject) => {
       axios
         .get(
-          this.proxy_url + '?endpoint=/countries',
+          this.proxy_url + '?endpoint=/countries&defaultLanguage='+defaultLanguage, 
           {
             headers: {
               'Cache-Control': 'no-store',
               'Pragma': 'no-cache',
-              'Expires': '0'
+              'Expires': '0',
+              //'Content-Language':'it-IT'
+
             }
           }
         )
@@ -500,26 +556,40 @@ export default class Api {
           reject(err);
         })
         .then(async (result) => {
-          let data = JSON.parse(result.data);
+          console.info("cart data is as follow123 1=>",result);
+          let data;
+          if(data && data.includes('CART_NOT_FOUND')) {
+            console.info("Cart Not ffff");
+             data = JSON.parse(result.data);  
+          }else { 
+             data = result.data; 
+          }
           if (
-            data.code !== null &&
+            data && data?.code && data.code !== null &&
             data.code !== undefined &&
             data.code === 'CART_NOT_FOUND'
           ) {
+            console.info("in cart if condition");
             await this.createCart();
             sessionStorage.setItem('cart_qty', 1);
             resolve(this.addToCart(cart_item));
-            return;
+            return; 
           }
+          console.info("cart data is as follow123 2=>",data);
+
           let cart_qty;
+          console.info("cart data is as follow123 3=>",data);
+
           if (
-            data.code !== undefined &&
+            data && data?.code && data.code !== undefined &&
             data.code !== null &&
             data.code.length > 1
           ) {
             resolve(data);
             return;
           }
+          console.info("cart data is as follow123 4=>",data);
+
           if (
             sessionStorage.getItem('cart_qty') === null ||
             sessionStorage.getItem('cart_qty') === undefined
@@ -529,8 +599,11 @@ export default class Api {
             cart_qty =
               parseFloat(sessionStorage.getItem('cart_qty')) + 1; 
           }
+          console.info("cart data is as follow123 5=>",data); 
+
           sessionStorage.setItem('cart_qty', cart_qty);
-          resolve(data);
+          console.info("Till Quantity");
+          resolve(data); 
         });
     });
   };
@@ -572,6 +645,7 @@ export default class Api {
   };
 
   createCart = async () => {
+    console.info("in create cart");
     return new Promise(async (resolve, reject) => {
       let req = await axios
         .get(
@@ -591,6 +665,32 @@ export default class Api {
       sessionStorage.setItem('cart_id', data.cart_id);
       this.cart_id = data.cart_id;
       console.log('created cart ' + data.cart_id);
+      resolve(data);
+      console.info("create cart end");
+    });
+  };
+
+  registerForm = async (registerData) => {
+    return new Promise(async (resolve, reject) => {
+      let req = await axios
+        .get(
+          this.proxy_url + '?endpoint=/registerForm&registerData='+
+          JSON.stringify(registerData), 
+          {
+            headers: {
+              'Cache-Control': 'no-store',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          }
+        )
+        .catch((err) => {
+          reject(err);
+        });
+      let data = JSON.parse(req.data);
+     // sessionStorage.setItem('cart_id', data.cart_id);
+    //  this.cart_id = data.cart_id;
+    //  console.log('created cart ' + data.cart_id);
       resolve(data);
     });
   };
@@ -612,6 +712,7 @@ export default class Api {
       //     reject(err);
       //   });
       let data = JSON.parse(req.data);
+      console.info("DAta is as follow=>",data); 
       let sku = data.data[0].sku;
 
       let result = await axios

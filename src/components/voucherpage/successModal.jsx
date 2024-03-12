@@ -3,13 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useTranslation } from 'react-i18next';
+import $ from 'jquery';
+
+
+
 const SuccessModal = (props) => {
   const ref = useRef();
   const isMobile = useMediaQuery({ maxWidth: 500 });
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
-      console.log('larifari');
+      console.log('larifari123');   
       // If the menu is open and the clicked target is not within the menu,
       // then close the menu
       if (
@@ -22,7 +27,6 @@ const SuccessModal = (props) => {
     };
 
     document.addEventListener('mousedown', checkIfClickedOutside);
-
     return () => {
       // Cleanup the event listener
       document.removeEventListener(
@@ -31,8 +35,11 @@ const SuccessModal = (props) => {
       );
     };
   }, [props.showModal]);
+  var { t } = useTranslation();
+
 
   return (
+
     <div
       style={{
         position: 'fixed',
@@ -53,7 +60,7 @@ const SuccessModal = (props) => {
           position: 'absolute',
           left: !isMobile ? 'calc(50% - 250px)' : 'calc(50% - 150px)',
           top: 'calc(50% - 86px)',
-          backgroundColor: 'white',
+          //backgroundColor: 'white',
           height: '172px',
           width: !isMobile ? '500px' : '300px',
         }}
@@ -62,7 +69,7 @@ const SuccessModal = (props) => {
           style={{
             width: '100%',
             height: '30px',
-            backgroundColor: 'rgb(0, 128, 0)',
+           // backgroundColor: 'rgb(0, 128, 0)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -74,9 +81,9 @@ const SuccessModal = (props) => {
             style={{ marginRight: '5px' }}
           />{' '}
           {!isMobile ? (
-            <>Der Gutschein wurde dem Warenkorb hinzugefügt</>
+            <>{t("THE_VOUCHER_HAS_BEEN_ADDED_TO_THE_CART")}</>
           ) : (
-            <>Gutschein hinzugefügt</>
+            <>{t("ADDED_COUPON")}</>
           )}
         </div>
         <div
@@ -95,7 +102,7 @@ const SuccessModal = (props) => {
               alignItems: 'center',
             }}
           >
-            <img src={props.voucherStore.activeImage} height="90px" />
+            <img src={props.voucherStore.activeImage} height="90px" /> 
           </div>
           <div
             height="100%"
@@ -110,9 +117,7 @@ const SuccessModal = (props) => {
             <div>
               <b>{props.voucherStore.voucher.name}</b>
               <br />
-              {parseFloat(props.configStore.price)
-                .toFixed(2)
-                .replace('.', ',')}{' '}
+             {' '}
               {props.voucherStore.voucher.currency_code}
             </div>
             <div style={{ width: '100%', display: 'flex' }}>
@@ -131,7 +136,7 @@ const SuccessModal = (props) => {
                   }
                   onClick={() => props.setShowModal(false)}
                 >
-                  Schließen
+                  {t("CLOSE")}
                 </button>
               </div>
               <div style={{ flexGrow: '1', padding: '10px' }}>
@@ -146,13 +151,13 @@ const SuccessModal = (props) => {
                         ? { width: '100%' }
                         : {
                             width: '100%',
-                            backgroundColor:
-                              props.settingsStore.settings
-                                .btn_primary_color,
+                            // backgroundColor:
+                            //   props.settingsStore.settings
+                            //     .btn_primary_color,
                           }
                     }
                   >
-                    {!isMobile ? <>Zur Kasse</> : <>Kasse</>}
+                    {!isMobile ? <>{t("TO_CHECKOUT")}</> : <>{t("CHECKOUT")}</>}
                   </button>
                 </Link>
               </div>

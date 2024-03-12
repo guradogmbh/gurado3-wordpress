@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next'; 
 
 const TopTabs = observer(({ step, settingsStore }) => {
+  var { t } = useTranslation();
   return (
     <div
       style={{
@@ -12,7 +14,7 @@ const TopTabs = observer(({ step, settingsStore }) => {
       <div
         style={{
           width: '100%',
-          maxWidth: '200px',
+          maxWidth: '250px',
         }}
       >
         <div style={{ width: '100%', display: 'flex' }}>
@@ -81,6 +83,46 @@ const TopTabs = observer(({ step, settingsStore }) => {
           >
             2
           </div>
+          <div
+            style={{
+              flexGrow: '1',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <hr
+              width="100%"
+              style={{ margin: '0', backgroundColor: 'black' }}
+            />
+          </div> 
+          <div
+            style={{
+              width: '35px',
+              height: '35px',
+              backgroundColor:
+                step === '3'
+                  ? settingsStore.settings.checkout_step_color_primary
+                    ? settingsStore.settings
+                        .checkout_step_color_primary
+                    : '#6c757d'
+                  : settingsStore.settings
+                      .checkout_step_color_secondary
+                  ? settingsStore.settings
+                      .checkout_step_color_secondary
+                  : 'rgb(87,86,86)',
+              color: settingsStore.settings.checkout_step_color_text
+                ? settingsStore.settings.checkout_step_color_text
+                : 'white',
+              borderRadius: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            3
+          </div>
+        
         </div>
         <div style={{ width: '100%', backgroundColor: 'yellow' }}>
           <div
@@ -90,16 +132,25 @@ const TopTabs = observer(({ step, settingsStore }) => {
               left: '-16px',
             }}
           >
-            Warenkorb
+           {t("SHOPPING_CART")}
           </div>
           <div
             style={{
               float: 'right',
               position: 'relative',
-              left: '4px',
+              left: '-84px',
             }}
           >
-            Zahlen
+          {t("CONTACT_INFO")} 
+          </div>
+          <div
+            style={{
+              float: 'right',
+              position: 'relative',
+              left: '92px', 
+            }}
+          >
+          {t("PAY")}
           </div>
         </div>
       </div>

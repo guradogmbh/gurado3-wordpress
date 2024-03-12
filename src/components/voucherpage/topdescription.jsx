@@ -8,35 +8,34 @@ const StyledWrapper = styled.div`
     display: flex;
   }
 `;
-const StyledImg = styled.div`
-  width: 41.666667%;
-  min-width: 41.666667%;
-  padding-right: 15px;
-  @media (max-width: 500px) {
-    width: 100%;
-    min-width: 100%;
-  }
-`;
+// const StyledImg = styled.div`
+//   width: 41.666667%;
+//   min-width: 41.666667%;
+//   padding-right: 15px;
+//   @media (max-width: 500px) {
+//     width: 100%;
+//     min-width: 100%;
+//   }
+// `;
 
 const TopDescription = observer(({ voucherStore }) => {
   return (
     <StyledWrapper>
-      <StyledImg>
-        <img
-          src={
-            voucherStore.voucher.images.length > 0
-              ? voucherStore.voucher.images[0].image_url
-              : 'https://i.stack.imgur.com/y9DpT.jpg'
-          }
-          style={{ height: 'auto', width: '100%' }}
-        />
-      </StyledImg>
+      <div className='row'>
+        <div className = 'col-lg-5'>
+       
+        </div>
+
+        <div className = 'col-lg-7'>
       <div
         style={{ paddingLeft: '15px', paddingRight: '15px' }}
         dangerouslySetInnerHTML={{
           __html: voucherStore.voucher.description,
         }}
       ></div>
+      </div> 
+      </div>
+
     </StyledWrapper>
   );
 });

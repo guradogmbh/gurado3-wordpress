@@ -4,12 +4,12 @@ import {
   observable,
   runInAction,
 } from 'mobx';
-import Api from '../helper/api';
+import register from '../helper/register';
 
 export default class SettingsStore {
   ready = false;
   settings = {};
-  API = new Api();
+  API = new register();
   display = 'box';
   product = '*';
   constructor() {
@@ -32,11 +32,14 @@ export default class SettingsStore {
         document.getElementById('gurado-product').innerHTML;
     });
 
-    this.API.getSettings().then((settings) => {
-      runInAction(() => {
-        this.settings = settings;
-        this.ready = true;
-      });
-    });
+    // this.API.getSettings().then((settings) => {
+    //   console.info("in load setting");
+
+    //   runInAction(() => {
+    //     this.settings = settings;
+    //     localStorage.setItem('settings',JSON.stringify(this.settings));  
+         this.ready = true; 
+    //   });
+    // });
   };
 }
